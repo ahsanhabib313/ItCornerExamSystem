@@ -1,0 +1,27 @@
+.admin-panel-heading {
+	font-size: 41px;
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+}
+.admin-panel-shadow {
+	box-shadow: 2px 2px 9px;
+	min-height: 708px;
+}
+.admin-question-fs {
+	font-size: 29px;
+}
+.admin-question-fs {
+    text-transform: lowercase;
+}
+.admin-question-fs:first-letter {
+    text-transform: uppercase;
+}
+form label {
+	margin-bottom: 5px;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: normal;
+}
+.app-title {
+	font-weight: bold;
+}

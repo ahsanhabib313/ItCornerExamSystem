@@ -1,0 +1,6 @@
+select[name="gender"] {
+    padding-left: 60px;
+}
+textarea[name="address"] {
+    height: 50px;
+}

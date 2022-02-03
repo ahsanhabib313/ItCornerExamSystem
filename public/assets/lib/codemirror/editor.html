@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editor</title>
+    <link rel="stylesheet" type="text/css" href="lib/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="theme/ambiance.css">
+    <script src="lib/jQuery/jQuery.js"></script>
+    <script src="lib/codemirror.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="editor-action.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+    <script src="mode/xml/xml.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="mode/css/css.js"></script>
+    <script src="mode/clike/clike.js"></script>
+    <script src='mode/php/php.js'></script>
+    <script src='addon/selection/active-line.js'></script>
+    <script src='addon/edit/matchbrackets.js'></script>
+</head>
+
+<body>
+    <div class="row">
+        <textarea class="codemirror-textarea" id="ed_code"></textarea>
+        <div class="app-row">
+            <button class="btn-action" id="run">Run</button>
+            <button class="btn-action" id="clear">Clear</button>
+            <button class="btn-action" id="refresh">Refresh</button>
+        </div>
+    </div>
+    <div class="app-row">
+        <div id="result"></div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var codeEditorElement = $(".codemirror-textarea")[0];
+            var editor = CodeMirror.fromTextArea(codeEditorElement, {
+                mode: "application/x-httpd-php",
+                lineNumbers: true,
+                matchBrackets: true,
+                theme: "ambiance",
+                lineWiseCopyCut: true,
+                undoDepth: 200
+            });
+            editor.setValue('<?php\necho "Hello World!"\n?>');
+
+            $(document).on('click', '#run', function (e) {
+                e.preventDefault();
+                $("#error").html("").hide();
+                var editorCode = editor.getValue();
+                if (editorCode != '') {
+                    $.ajax({
+                        url: 'file-write.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { "input": editorCode },
+                        success: function (response) {
+                        },
+                        complete: function () {
+                            $.ajax({
+                                url: 'code-editable.php',
+                                type: 'GET',
+                                success: function (response) {
+                                    console.log("response:  " + response);
+                                    $("#result").html(response);
+                                },
+                                error: function () {
+                                    console.log("error: " + response);
+                                }
+                            });
+                        }
+                    });
+
+                } else {
+                    $("#error").html("Code should not be empty").show();
+                }
+
+            });
+
+            $(document).on('click', '#clear', function (e) {
+                e.preventDefault();
+                $("#error").html("").hide();
+                editor.setValue('');
+            });
+
+            $(document).on('click', '#refresh', function (e) {
+                e.preventDefault();
+                $("#error").html("").hide();
+                location.reload();
+            });
+        });
+    </script>
+</body>
+
+</html>

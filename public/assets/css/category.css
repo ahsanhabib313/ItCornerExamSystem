@@ -1,0 +1,15 @@
+table {
+    color: #000;
+}
+table tr {
+    text-align: center;
+}
+#editCategoryModal {
+    color: #000;
+}
+.success_msg {
+    display: none;
+}
+.error_msg {
+    display: none;
+}

@@ -1,0 +1,31 @@
+.hidden {
+    display: none !important;
+}
+.question_section h3 {
+    font-weight: 800 !important;
+}
+.question_section h5 {
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+.question_section h6 {
+    background-color: #576a4c !important;
+}
+.btn-info {
+    color: #ffffff !important;
+    background-color: #1986d7 !important;
+    border-color: #1382d3 !important;
+    width: 80px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    font-size: 15px !important;
+}
+.btn-danger {
+    color: #ffffff !important;
+    background-color: #c50013 !important;
+    border-color: #c50013 !important;
+    width: 80px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    font-size: 15px !important;
+}
