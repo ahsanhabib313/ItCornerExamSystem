@@ -37,20 +37,17 @@ class UserController extends Controller
         //update the user personal info
         $update = User::where('id', $user_id)
                     ->update([
-
                         'institute' => $institute,
                         'cgpa'        => $cgpa
 
                     ]);
 
-        $this->getExamineeResult($user_id);
+        return ($this->getExamineeResult($user_id));
     }
 
 
     //get the result
     public function getExamineeResult($user_id){
-
-
         //get the user latest exam instance
         $exam = Exam::orderBy('id','desc')->where('user_id', $user_id)->first();
 

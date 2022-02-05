@@ -187,41 +187,49 @@ function skipPersonalInfo(id) {
     })
 }
 
-// store the personal info after eaxm
-function personalInfo(id) {
+// store the personal info after exam
+$('#personaInfo').submit(function (event){
+    event.preventDefault();
 
+    var user_id = $('#user_id').val();
     var institute = $('#institute').val();
     var cgpa = $('#cgpa').val();
 
     //convert into formData
     var formData = new FormData();
-    formData.append('user_id', id);
+    formData.append('user_id', user_id);
     formData.append('institute', institute);
     formData.append('cgpa', cgpa);
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    let form = $('#personaInfo');
+    let route = form.attr('action');
+    let method = form.attr('method');
     //call to ajax
     $.ajax({
-        url: personalInfoRoute,
-        type: 'post',
+        url: route,
+        type: method,
         data: formData,
-        dataType: 'json',
         contentType: false,
         processData: false,
         cache: false,
-        success: function (data) {
-
+        success:function (data){
             $('#main_content').html(data);
         },
         error: function (xhr, status, error) {
-
             $.each(xhr.responseJSON.errors, function (key, item) {
                 $("#errors").append("<p class='alert alert-danger'>" + item + "</p>")
             });
 
         }
-
     })
-}
+});
+
 
 //get the examinee Result
  /*function getExamineeResult() {

@@ -46,18 +46,16 @@
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <script>
       var fileWriteUrl = '<?php echo url('file/write') ?>';
       var codeEditableUrl = '<?php echo url('../../codeEditorFile/codeEditable.php') ?>';
       var getNextQuestionUrl = '<?php echo url('get/next/question')?>'
-      var personalInfoRoute = "<?php echo route('store.personal.info')  ?>";
       var getExamineeResultUrl = "<?php echo url('get/examinee/result') ?>"
       var userSuspendUrl= "<?php echo url('user/suspended/') ?>"
   </script>
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="{{asset('assets/js/examPage.js')}}"></script>
+  <script src="{{asset('assets/js/examPage.js')}}"></script>
 
 </body>
 
