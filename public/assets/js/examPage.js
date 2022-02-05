@@ -69,10 +69,18 @@ function playSound() {
     const audio = new Audio("../../assets/audio/beep.mp3");
     audio.play();
 }
-//set a timer funtion
-var time = 20;
 
+//get the question time
+var mcq_ques_time = $('#mcq_ques_time').val()
+var code_ques_time = $('#code_ques_time').val()
 
+if($('#question_type_id').val() == 1){
+    var time = mcq_ques_time;
+}else{
+    var time = code_ques_time;
+}
+
+//call the timer function
 function myTimer() {
     $('.timer_value').text(time);
     time--;

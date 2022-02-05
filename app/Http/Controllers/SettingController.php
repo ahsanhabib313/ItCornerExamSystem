@@ -21,8 +21,7 @@ class SettingController extends Controller
     {
 
         $categories = Category::all();
-        $question_types = QuestionType::all();
-        return view('admin.add-setting', compact('categories','question_types'));
+        return view('admin.add-setting', compact('categories'));
     }
 
     public function store_setting(Request $request){
@@ -31,7 +30,8 @@ class SettingController extends Controller
             'question_limit'=>'required|min:5|max:100|numeric',
             'pass_mark'=>'required|numeric',
             'category_id'=>'required',
-            'question_type_id'=>'required',
+            'mcq_ques_time'=>'required|numeric',
+            'code_ques_time'=>'required|numeric',
         ];
         $validator = Validator::make($request->all(),$validation_rules);
         if($validator->fails()) {
@@ -42,7 +42,8 @@ class SettingController extends Controller
             $setting->question_limit = $request->question_limit;
             $setting->pass_mark = $request->pass_mark;
             $setting->category_id = $request->category_id;
-            $setting->question_type_id = $request->question_type_id;
+            $setting->mcq_ques_time = $request->mcq_ques_time;
+            $setting->code_ques_time = $request->code_ques_time;
             if($setting->save()){
                 $setting_id = Setting::orderBy('id','desc')->first()->id;
                 if($setting_id){
@@ -53,8 +54,8 @@ class SettingController extends Controller
                                 ]);
                     }
                 }
-            
-                return Response::json(['success'=>"Question limit set successfully"]);
+
+                return Response::json(['success'=>"Setting page set successfully"]);
             }else{
                 return Response::json(['failed'=>"Sorry Operation failed! Please try again later"]);
             }
@@ -70,7 +71,8 @@ class SettingController extends Controller
     {
         //get all settings
         $settings = Setting::all();
-        return view('admin.show-setting', compact('settings'));
+        $categories = Category::all();
+        return view('admin.show-setting', compact('settings', 'categories'));
     }
 
     /**

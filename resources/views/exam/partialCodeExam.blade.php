@@ -17,6 +17,8 @@
                         <input type="hidden" id="question_id" value="{{$question->id}}">
                         <input type="hidden" id="question_limit" value="{{$question_limit}}">
                         <input type="hidden" id="question_type_id" value="{{$question_type_id}}">
+                        <input type="hidden" id="mcq_ques_time" value="{{$mcq_ques_time}}">
+                        <input type="hidden" id="code_ques_time" value="{{$code_ques_time}}">
 
 
 

@@ -6,7 +6,7 @@
             <div class="row ">
                 <div class="col-lg-4"></div>
                 <div class="col-lg-4 text-center">
-               Show Settigs 
+               Show Settigs
                 </div>
                 <div class="col-lg-4"></div>
             </div>
@@ -14,7 +14,7 @@
         <hr>
         <div class="p-3">
             <div class="row d-flex justify-content-center">
-             
+
                 <div class="col-lg-8">
                    <div class="card">
                        <div class="card-body">
@@ -24,7 +24,8 @@
                                         <th>Question Limit</th>
                                         <th>Pass Question Quantity</th>
                                         <th>Category</th>
-                                        <th>Question Type</th>
+                                        <th>MCQ Question Time</th>
+                                        <th>Programming Question Time</th>
                                         <th>Action</th>
                                     </thead>
                                     <tbody>
@@ -34,7 +35,8 @@
                                                     <td>{{$item->question_limit}}</td>
                                                     <td>{{$item->pass_mark}}</td>
                                                     <td>{{strtoupper($item->category->name)}}</td>
-                                                    <td>{{strtoupper($item->questionType->name)}}</td>
+                                                    <td>{{($item->mcq_ques_time)}}s</td>
+                                                    <td>{{($item->code_ques_time)}}s</td>
                                                     <td>
                                                         <button class="btn btn-info" data-toggle="modal" data-target="#editSettingModal" onclick="editSetting({{ $item->id }})">Edit</button>
                                                         <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSettingModal">Delete</button>
@@ -47,7 +49,7 @@
                        </div>
                        </div>
                     </div>
-               
+
             </div>
         </div>
     </div>
@@ -71,15 +73,31 @@
             <div class="row d-flex justify-content-center">
                     <div class="col-md-10">
                       <form action="{{ route('admin.update.setting') }}">
-                          <div class="form-group"> 
+                          <div class="form-group">
                                 <label for="#question_limit">Question Limit</label>
                                 <input type="text" name="question_limit" id="question_limit" class="form-control">
                           </div>
-                          <div class="form-group"> 
+                          <div class="form-group">
                                 <label for="#pass_mark">Pass Question Quantity</label>
                                 <input type="text" name="pass_mark" id="pass_mark" class="form-control">
                           </div>
-                          <div class="select_section">
+                          <div class="form-group">
+                              <label for="#category_id">Category</label>
+                              <select class="form-control" name="category_id">
+                                  <option value="" disabled></option>
+                                  @foreach($categories as $category)
+                                      <option value="{{$category->id}}">{{$category->name}}</option>
+                                  @endforeach
+
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label for="mcq_ques_time">MCQ Question Time</label>
+                              <input name="mcq_ques_time" class="form-control" id="mcq_ques_time">
+                          </div>
+                          <div class="form-group">
+                              <label for="code_ques_time">Code Question Time</label>
+                              <input name="code_ques_time" class="form-control" id="code_ques_time">
                           </div>
                       </form>
                     </div>
@@ -104,12 +122,12 @@
         </div>
         <div class="modal-body">
             <div class="alert alert-warning error_msg">
-                  
+
             </div>
             <form id="deleteForm" action="{{url('admin/delete/category')}}">
                 <input type="hidden" id="id">
             </form>
-             
+
                 <div class="container">
                     <div class="row d-flex justify-content-center">
                             <div>

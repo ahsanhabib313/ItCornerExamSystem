@@ -67,6 +67,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' =
     Route::post('/add-answer', [QuestionsController::class, 'add_answer_store'])->name('add-answer');
     //settings route
     Route::get('/add/setting',[SettingController::class,'index'])->name('admin.add.setting');
+    Route::post('/add/setting',[SettingController::class,'store_setting'])->name('admin.add.setting');
     Route::get('/show/setting',[SettingController::class,'show_setting'])->name('admin.show.setting');
     Route::post('/update/setting',[SettingController::class,'update_setting'])->name('admin.update.setting');
 

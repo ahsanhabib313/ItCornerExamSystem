@@ -6,7 +6,7 @@
             <div class="row ">
                 <div class="col-lg-4"></div>
                 <div class="col-lg-4 text-center">
-              Add Settigs 
+              Add Settigs
                 </div>
                 <div class="col-lg-4"></div>
             </div>
@@ -18,7 +18,7 @@
                 <div class="col-lg-4">
                    <div class="jumbotron">
                     <div class="alert alert-success" style="display:none"></div>
-                    <form action="{{route('admin.add.setting')}}" id="add_setting_form">
+                    <form action="{{route('admin.add.setting')}}" id="add_setting_form" >
                         <div class="mb-3">
                                 <div class="form-group">
                                     <label for="limit" class="form-label">How many questions do you want to give in the exam?</label>
@@ -46,13 +46,14 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-group">
-                                <label for="question_type">Question Type</label>
-                                <select class="form-control" id="question_type" name="question_type_id">
-                                    <option value="">Choose Question Type</option>
-                                    @foreach($question_types as $question_type)
-                                    <option value="{{$question_type->id}}">{{strtoupper($question_type->name)}}</option>
-                                    @endforeach
-                                </select>
+                                <label for="mcq_ques_time">MCQ Question Time</label>
+                                <input name="mcq_ques_time" id="mcq_ques_time" class="form-control" placeholder="ex: 20 seconds">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="code_ques_time">Programming Question Time</label>
+                                <input name="code_ques_time" id="code_ques_time" class="form-control" placeholder="ex: 20 seconds">
                             </div>
                         </div>
                         <div class="mb-3">

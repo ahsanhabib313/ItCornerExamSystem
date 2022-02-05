@@ -18,11 +18,12 @@ class CreateSettingsTable extends Migration
             $table->integer('question_limit');
             $table->integer('pass_mark');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('question_type_id');
+            $table->integer('mcq_ques_time');
+            $table->integer('code_ques_time');
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('question_type_id')->references('id')->on('question_types');
+
         });
     }
 

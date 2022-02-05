@@ -168,10 +168,16 @@ $(document).ready(function(){
                             '<span class="text-danger">'+data.failed.category_id[0]+'</span>'
                         );
                     }
-                    $("select[name=question_type_id]").addClass("is-invalid");
-                    if($("select[name=question_type_id]").next("span").length == 0){
-                        $("select[name=question_type_id]").after(
-                            '<span class="text-danger">'+data.failed.question_type_id[0]+'</span>'
+                    $("input[name=mcq_ques_time]").addClass("is-invalid");
+                    if($("input[name=mcq_ques_time]").next("span").length == 0){
+                        $("input[name=mcq_ques_time]").after(
+                            '<span class="text-danger">'+data.failed.mcq_ques_time[0]+'</span>'
+                        );
+                    }
+                    $("input[name=code_ques_time]").addClass("is-invalid");
+                    if($("input[name=code_ques_time]").next("span").length == 0){
+                        $("input[name=code_ques_time]").after(
+                            '<span class="text-danger">'+data.failed.code_ques_time[0]+'</span>'
                         );
                     }
                 }else{
@@ -181,8 +187,10 @@ $(document).ready(function(){
                     $("input[name=pass_mark").next().remove();
                     $("input[name=category_id]").removeClass("is-invalid");
                     $("input[name=category_id").next().remove();
-                    $("input[name=question_type_id]").removeClass("is-invalid");
-                    $("input[name=question_type_id").next().remove();
+                    $("input[name=mcq_ques_time]").removeClass("is-invalid");
+                    $("input[name=mcq_ques_time").next().remove();
+                    $("input[name=code_ques_time]").removeClass("is-invalid");
+                    $("input[name=code_ques_time").next().remove();
                     $('.alert').fadeIn();
                     setTimeout(() => {
                         $('.alert').fadeOut();

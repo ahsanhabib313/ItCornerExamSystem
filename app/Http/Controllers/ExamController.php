@@ -44,6 +44,12 @@ class ExamController extends Controller
         //get the category
         $category_id = $setting->category_id;
 
+        //get mcq question time
+        $mcq_ques_time = $setting->mcq_ques_time;
+
+        //get mcq question time
+        $code_ques_time = $setting->code_ques_time;
+
         //retrieve a random question from questions table
         $question = Question::where('category_id',$category_id)->inRandomOrder()->first();
 
@@ -77,13 +83,13 @@ class ExamController extends Controller
 
             //retrieve the options from option table according to question id
             $options = Option::where('question_id', $question->id)->get();
-            return(view('exam.mcqExam', compact('options','question_limit','question','current_ques_no','user_id','question_type_id')));
+            return(view('exam.mcqExam', compact('options','question_limit','question','current_ques_no','user_id','question_type_id','mcq_ques_time','code_ques_time')));
         }
 
         //check question type id
         if( $question->question_type_id == 2){
 
-            return(view('exam.codeExam', compact('question_limit','question','current_ques_no','user_id','question_type_id')));
+            return(view('exam.codeExam', compact('question_limit','question','current_ques_no','user_id','question_type_id', 'mcq_ques_time','code_ques_time')));
         }
 
     }
