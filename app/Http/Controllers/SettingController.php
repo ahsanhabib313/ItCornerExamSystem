@@ -28,7 +28,7 @@ class SettingController extends Controller
 
         $validation_rules = [
             'question_limit'=>'required|min:5|max:100|numeric',
-            'pass_mark'=>'required|numeric',
+            'pass_mark_percentage'=>'required|numeric',
             'category_id'=>'required',
             'mcq_ques_time'=>'required|numeric',
             'code_ques_time'=>'required|numeric',
@@ -40,7 +40,7 @@ class SettingController extends Controller
             $users = User::all();
             $setting = new Setting();
             $setting->question_limit = $request->question_limit;
-            $setting->pass_mark = $request->pass_mark;
+            $setting->pass_mark_percentage = $request->pass_mark_percentage;
             $setting->category_id = $request->category_id;
             $setting->mcq_ques_time = $request->mcq_ques_time;
             $setting->code_ques_time = $request->code_ques_time;
@@ -73,6 +73,30 @@ class SettingController extends Controller
         $settings = Setting::all();
         $categories = Category::all();
         return view('admin.show-setting', compact('settings', 'categories'));
+    }
+
+    /**
+     * added by safkat
+    */
+    public function update_setting(Request $request){
+       $update = Setting::where('id',$request->id)
+                         ->update([
+                             'question_limit' => $request->question_limit,
+                             'pass_mark_percentage' => $request->pass_mark_percentage,
+                             'category_id' => $request->category_id,
+                             'mcq_ques_time' => $request->mcq_ques_time,
+                             'code_ques_time' => $request->code_ques_time,
+                         ]);
+
+        if($update){
+            return response()->json([
+                'success' => 'Settings Updated Successfully...!'
+            ]);
+        }else{
+            return response()->json([
+                'error' => 'Settings does not update, Please try again...!'
+            ]);
+        }                 
     }
 
     /**

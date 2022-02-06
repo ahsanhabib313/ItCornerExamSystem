@@ -6,7 +6,9 @@
             <div class="row ">
                 <div class="col-lg-4"></div>
                 <div class="col-lg-4 text-center">
-               Show Settigs
+                  Show Settigs
+                    <div class="alert alert-success success_msg">
+                    </div>
                 </div>
                 <div class="col-lg-4"></div>
             </div>
@@ -32,13 +34,23 @@
                                         @isset($settings)
                                             @foreach ($settings as $item)
                                                 <tr>
-                                                    <td>{{$item->question_limit}}</td>
-                                                    <td>{{$item->pass_mark}}</td>
-                                                    <td>{{strtoupper($item->category->name)}}</td>
-                                                    <td>{{($item->mcq_ques_time)}}s</td>
-                                                    <td>{{($item->code_ques_time)}}s</td>
+                                                    <td class="question_limit_{{$item->id}}">{{$item->question_limit}}</td>
+                                                    <input type="hidden" name="question_limit_{{$item->id}}" value = "{{$item->question_limit}}">
+
+                                                    <td class="pass_mark_{{$item->id}}">{{$item->pass_mark_percentage}}</td>
+                                                    <input type="hidden" name="pass_mark_{{$item->id}}" value = "{{$item->pass_mark_percentage}}">
+
+                                                    <td class="category_name_{{$item->id}}">{{strtoupper($item->category->name)}}</td>
+                                                    <input type="hidden" name="category_name_{{$item->id}}" value = "{{strtoupper($item->category->name)}}">
+                                                    
+                                                    <td class="mcq_ques_time_{{$item->id}}">{{($item->mcq_ques_time)}}s</td>
+                                                    <input type="hidden" name="mcq_ques_time_{{$item->id}}" value = "{{($item->mcq_ques_time)}}">
+
+                                                    <td class="code_ques_time_{{$item->id}}">{{($item->code_ques_time)}}s</td>
+                                                    <input type="hidden" name="code_ques_time_{{$item->id}}" value = "{{($item->code_ques_time)}}">
+
                                                     <td>
-                                                        <button class="btn btn-info" data-toggle="modal" data-target="#editSettingModal" onclick="editSetting({{ $item->id }})">Edit</button>
+                                                        <button class="btn btn-info" data-toggle="modal" data-target="#editSettingModal" onclick="editSetting({{ $item->id}}, {{$item->category_id}})">Edit</button>
                                                         <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSettingModal">Delete</button>
                                                     </td>
                                                 </tr>
@@ -72,7 +84,8 @@
 
             <div class="row d-flex justify-content-center">
                     <div class="col-md-10">
-                      <form action="{{ route('admin.update.setting') }}">
+                      <form id = "editForm" action="{{url('admin/update/setting')}}">
+                      <input type="hidden" id="id">
                           <div class="form-group">
                                 <label for="#question_limit">Question Limit</label>
                                 <input type="text" name="question_limit" id="question_limit" class="form-control">
@@ -83,10 +96,10 @@
                           </div>
                           <div class="form-group">
                               <label for="#category_id">Category</label>
-                              <select class="form-control" name="category_id">
+                              <select class="form-control" name="category_id" id="category_id" >
                                   <option value="" disabled></option>
                                   @foreach($categories as $category)
-                                      <option value="{{$category->id}}">{{$category->name}}</option>
+                                      <option value="{{$category->id}}" >{{$category->name}}</option>
                                   @endforeach
 
                               </select>
@@ -99,6 +112,12 @@
                               <label for="code_ques_time">Code Question Time</label>
                               <input name="code_ques_time" class="form-control" id="code_ques_time">
                           </div>
+
+                          <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="update" class="btn btn-primary">Update</button>
+                          </div>
+
                       </form>
                     </div>
             </div>
@@ -143,4 +162,11 @@
       </div>
     </div>
   </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{asset('assets/js/settings.js')}}"></script> 
 @endsection
+
+
+
+

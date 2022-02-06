@@ -156,10 +156,10 @@ $(document).ready(function(){
                             '<span class="text-danger">'+data.failed.question_limit[0]+'</span>'
                         );
                     }
-                    $("input[name=pass_mark]").addClass("is-invalid");
-                    if($("input[name=pass_mark]").next("span").length == 0){
-                        $("input[name=pass_mark]").after(
-                            '<span class="text-danger">'+data.failed.pass_mark[0]+'</span>'
+                    $("input[name=pass_mark_percentage]").addClass("is-invalid");
+                    if($("input[name=pass_mark_percentage]").next("span").length == 0){
+                        $("input[name=pass_mark_percentage]").after(
+                            '<span class="text-danger">'+data.failed.pass_mark_percentage[0]+'</span>'
                         );
                     }
                     $("select[name=category_id]").addClass("is-invalid");
@@ -183,8 +183,8 @@ $(document).ready(function(){
                 }else{
                     $("input[name=question_limit]").removeClass("is-invalid");
                     $("input[name=question_limit").next().remove();
-                    $("input[name=pass_mark]").removeClass("is-invalid");
-                    $("input[name=pass_mark").next().remove();
+                    $("input[name=pass_mark_percentage]").removeClass("is-invalid");
+                    $("input[name=pass_mark_percentage]").next().remove();
                     $("input[name=category_id]").removeClass("is-invalid");
                     $("input[name=category_id").next().remove();
                     $("input[name=mcq_ques_time]").removeClass("is-invalid");

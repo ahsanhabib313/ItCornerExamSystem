@@ -28,7 +28,7 @@
                         <div class="mb-3">
                             <div class="form-group">
                                 <label for="limit" class="form-label">Pass Mark(%)</label>
-                                <input type="text" name="pass_mark"  class="form-control">
+                                <input type="text" name="pass_mark_percentage"  class="form-control">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -47,13 +47,13 @@
                         <div class="mb-3">
                             <div class="form-group">
                                 <label for="mcq_ques_time">MCQ Question Time</label>
-                                <input name="mcq_ques_time" id="mcq_ques_time" class="form-control" placeholder="ex: 20 seconds">
+                                <input name="mcq_ques_time" id="mcq_ques_time" class="form-control" placeholder="ex: 20">
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-group">
                                 <label for="code_ques_time">Programming Question Time</label>
-                                <input name="code_ques_time" id="code_ques_time" class="form-control" placeholder="ex: 20 seconds">
+                                <input name="code_ques_time" id="code_ques_time" class="form-control" placeholder="ex: 20">
                             </div>
                         </div>
                         <div class="mb-3">
