@@ -2,72 +2,62 @@
 @section('content')
     @include('exam.header')
     <div class="d-flex justify-content-center row">
-        <div class="col-md-6 col-lg-8">
-            <div class="jumbotron">
-                <div id="errors"></div>
+        <div class="col-md-5 m-5">
+            <div class="card">
+                <div class="card-body p-5">
+                    <div id="errors"></div>
 
-                <form action="{{route('store.personal.info')}}" id="personaInfo" method="POST">
+                    <form action="{{route('store.personal.info')}}" id="personaInfo" method="POST">
 
-                    <input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
+                        <input type="hidden" name="user_id" id="user_id" value="{{$user_id}}">
 
                         <div class="form-group">
-                            <select class="form-control form-control" name="fresher" onchange="isFresher(this.value)">
-                                <option value="">Are you Fresher..?</option>
+                            <select class="form-control  form-control-sm" name="fresher" onchange="isFresher(this.value)">
+                                <option value="" disabled selected>Are you Fresher..?</option>
                                 <option value="1" >Yes</option>
                                 <option value="0">No</option>
                             </select>
-                            @error('fresher')
-                            <p class="text-warning">{{$message}}</p>
-                            @enderror
+
                         </div>
 
                         <div class=" experience_div" >
                             <div class="form-group">
-                                <select class="form-control form-control" name="experience">
-                                    <option value="">Year of Experience...</option>
+                                <select class="form-control form-control-sm" name="experience">
+                                    <option value="" disabled selected>Year of Experience...</option>
                                     <option value=".5" >.5 year</option>
                                     <option value="1">1 year</option>
                                     <option value="1.5">1.5 year</option>
                                     <option value="2">2 year</option>
                                 </select>
-                                @error('experience')
-                                <p class="text-warning">{{$message}}</p>
-                                @enderror
-                           </div>
+
+                            </div>
                         </div>
                         <div class="salary_div">
                             <div class="form-group">
                                 <input type="text" name="expected_salary" id="salary"
-                                       class=" form-control form-control" value="" placeholder="Expected Salary...">
-                                @error('expected_salary')
-                                <p class="text-warning">{{$message}}</p>
-                                @enderror
+                                       class=" form-control form-control-sm" value="" placeholder="Expected Salary...">
+
                             </div>
                         </div>
                         <div class="form-group">
                             <input type="text" name="city" id="city"
-                                   class=" form-control form-control" placeholder="Current City...">
-                            @error('city')
-                            <p class="text-warning">{{$message}}</p>
-                            @enderror
+                                   class=" form-control form-control-sm" placeholder="Current City...">
+
                         </div>
                         <div class="form-group">
-                            <textarea rows="2" class="form-control" placeholder="address.." name="address"></textarea>
-                            @error('address')
-                            <p class="text-warning">{{$message}}</p>
-                            @enderror
+                            <textarea rows="2" class="form-control form-control-sm" placeholder="address.." name="address"></textarea>
+
                         </div>
                         <div class="form-group">
-                            <label for="institute">Institute</label>
-                            <input type="text" name="institute" class="form-control" id="institute" placeholder="Enter institute name...">
+                            <input type="text" name="institute" class="form-control form-control-sm " id="institute" placeholder="Graduated From">
                         </div>
                         <div class="form-group">
-                            <label for="cpga">CGPA</label>
-                            <input type="text"  name="cgpa " class="form-control" id="cgpa" placeholder="enter your cgpa...">
+                            <input type="text"  name="cgpa " class="form-control form-control-sm" id="cgpa" placeholder="B.Sc or Equivalent CGPA">
                         </div>
                         <button  onclick="skipPersonalInfo({{$user_id}})" class="btn btn-danger" >Skip</button>
                         <button type="submit"  class="btn btn-primary ml-2">Submit</button>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

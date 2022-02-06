@@ -24,11 +24,11 @@ class CreateUsersTable extends Migration
             $table->bigInteger('mobile_number');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->integer('fresher');
+            $table->integer('fresher')->nullable();
             $table->double('experience')->nullable();
             $table->double('salary')->nullable();
-            $table->string('city');
-            $table->text('address');
+            $table->string('city')->nullable();
+            $table->text('address')->nullable();
             $table->string('institute')->nullable();
             $table->double('cgpa')->nullable();
             $table->unsignedBigInteger('setting_id')->nullable();

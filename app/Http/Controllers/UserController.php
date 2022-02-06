@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\CodeQuestionsAnswer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Exam;
 use App\Models\Option;
 use App\Models\Setting;
-use App\Models\RelationUserQuestion;
 
 class UserController extends Controller
 {
@@ -26,19 +24,40 @@ class UserController extends Controller
 
         // validate the input
         $request->validate([
-            'institute' => 'required',
-            'cgpa'      => 'required'
+                  'fresher' => 'required',
+                     'city' => 'required',
+                  'address' => 'required',
+                'institute' => 'required',
+                'cgpa'      => 'required'
         ]);
 
-        $user_id = $request->user_id;
-        $institute= $request->institute;
-        $cgpa = $request->cgpa;
+        //validate expected_salary and experience if user is not a fresher
+        if($request->fresher == 0){
+            $request->validate([
+                     'experience' => 'required',
+                'expected_salary' => 'required',
+            ]);
+        }
+
+                $user_id = $request->user_id;
+                $fresher = $request->fresher;
+             $experience = $request->experience;
+        $expected_salary = $request->expected_salary;
+                   $city = $request->city;
+                $address = $request->address;
+              $institute = $request->institute;
+                   $cgpa = $request->cgpa;
 
         //update the user personal info
         $update = User::where('id', $user_id)
                     ->update([
-                        'institute' => $institute,
-                        'cgpa'        => $cgpa
+                    'fresher' => $fresher,
+                 'experience' => $experience,
+            'expected_salary' => $expected_salary,
+                       'city' => $city,
+                    'address' => $address,
+                  'institute' => $institute,
+                       'cgpa' => $cgpa
 
                     ]);
 
@@ -48,6 +67,7 @@ class UserController extends Controller
 
     //get the result
     public function getExamineeResult($user_id){
+
         //get the user latest exam instance
         $exam = Exam::orderBy('id','desc')->where('user_id', $user_id)->first();
 
@@ -87,7 +107,6 @@ class UserController extends Controller
             }
         }
 
-
         //update the status on setting table
         Exam::orderBy('id','desc')->where('user_id', $user_id)
                  ->update([
@@ -102,7 +121,6 @@ class UserController extends Controller
     }
 
     /** user make suspended function */
-
     public function userSuspend($user_id){
 
         $update = Exam::where('user_id', $user_id)

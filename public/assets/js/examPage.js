@@ -230,6 +230,7 @@ $('#personaInfo').submit(function (event){
             $('#main_content').html(data);
         },
         error: function (xhr, status, error) {
+            $('#errors').html(' ');
             $.each(xhr.responseJSON.errors, function (key, item) {
                 $("#errors").append("<p class='alert alert-danger'>" + item + "</p>")
             });

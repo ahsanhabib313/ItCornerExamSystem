@@ -1,3 +1,3 @@
 <?php
- print_r(explode(' ',"This is a string in PHP"));
+ echo "Hello World"
 ?>

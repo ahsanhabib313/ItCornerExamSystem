@@ -138,106 +138,111 @@
                                     new stuff waiting
                                     for you</p>
                             </div>
-                            <form action="{{route('user.register')}}" enctype="multipart/form-data" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon">
-                                            <i class="fa fa-user" aria-hidden="true"></i>
-                                            <input type="text" class="form-control form-control-lg no-b"
-                                                placeholder="First Name" name="first_name">
-                                                @error('first_name')
+                            <div class="jumbotron" style="background-color: #46747c !important;">
+                                <div class="">
+                                    <form action="{{route('user.register')}}" enctype="multipart/form-data" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                                    <input type="text" class="form-control form-control-md no-b"
+                                                           placeholder="First Name" name="first_name">
+                                                    @error('first_name')
                                                     <p class="text-warning">{{$message}}</p>
-                                                @enderror
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="fa fa-user"
+                                                                                    aria-hidden="true"></i>
+                                                    <input type="text" class="form-control form-control-md no-b"
+                                                           placeholder="Last Name" name="last_name">
+                                                    @error('last_name')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="fas fa-venus-mars" aria-hidden="false"></i>
+                                                    <select class="form-control form-control-md no-b" name="gender" >
+                                                        <option value="null" selected disabled>Gender</option>
+                                                        <option value="male" >Male</option>
+                                                        <option value="female">Female</option>
+                                                    </select>
+                                                    @error('gender')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon">
+                                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                                    <input type="text" name="age" class="form-control form-control-md no-b"
+                                                           placeholder="Age">
+                                                    @error('age')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="icon-envelope-o"></i>
+                                                    <input type="email" class="form-control form-control-md no-b"
+                                                           placeholder="Email Address" name="email">
+                                                    @error('email')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="icon-user-secret"></i>
+                                                    <input type="password" class="form-control form-control-md no-b"
+                                                           placeholder="Password" name="password">
+                                                    @error('password')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="fas fa-mobile-alt"></i>
+                                                    <input type="text" class="form-control form-control-md no-b"
+                                                           placeholder="Mobile Number" name="mobile_number">
+                                                    @error('mobile_number')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group has-icon"><i class="fas fa-camera"></i>
+                                                    <input type="file" name="image"
+                                                           class=" form-control form-control-md no-b" accept="image/*">
+                                                    @error('image')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <select class="form-control form-control-md no-b" name="category">
+                                                        <option value="" disabled selected>Application For</option>
+                                                        @isset($categories)
+                                                            @foreach ($categories as $category)
+                                                                <option value="{{$category->id}}" >{{$category->name}}</option>
+                                                            @endforeach
+                                                        @endisset
+                                                    </select>
+                                                    @error('category')
+                                                    <p class="text-warning">{{$message}}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12" style="padding: 0">
+                                                <input type="submit" class="btn btn-success btn-lg btn-block" value="Sign Up">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="fa fa-user"
-                                                aria-hidden="true"></i>
-                                            <input type="text" class="form-control form-control-lg no-b"
-                                                placeholder="Last Name" name="last_name">
-                                            @error('last_name')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="fas fa-venus-mars" aria-hidden="false"></i>
-                                            <select class="form-control form-control-lg no-b" name="gender" >
-                                                <option value="null" selected disabled>Gender</option>
-                                                <option value="male" >Male</option>
-                                                <option value="female">Female</option>
-                                            </select>
-                                        @error('gender')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div>
-                                            <input type="text" name="age" class="form-control form-control-lg no-b"
-                                                placeholder="Age">
-                                            @error('age')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="icon-envelope-o"></i>
-                                            <input type="email" class="form-control form-control-lg no-b"
-                                                placeholder="Email Address" name="email">
-                                           @error('email')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="icon-user-secret"></i>
-                                            <input type="password" class="form-control form-control-lg no-b"
-                                                placeholder="Password" name="password">
-                                            @error('password')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="fas fa-mobile-alt"></i>
-                                            <input type="text" class="form-control form-control-lg no-b"
-                                                placeholder="Mobile Number" name="mobile_number">
-                                            @error('mobile_number')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group has-icon"><i class="fas fa-camera"></i>
-                                            <input type="file" name="image"
-                                                class=" form-control form-control-lg no-b" accept="image/*">
-                                            @error('image')
-                                                <p class="text-warning">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select class="form-control form-control-lg no-b" name="category">
-                                                <option value="">Application For</option>
-                                                @isset($categories)
-                                                  @foreach ($categories as $category)
-                                                  <option value="{{$category->id}}" >{{$category->name}}</option>
-                                                  @endforeach
-                                                @endisset
-                                            </select>
-                                        @error('category')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12" style="padding: 0">
-                                        <input type="submit" class="btn btn-success btn-lg btn-block" value="Sign Up">
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
