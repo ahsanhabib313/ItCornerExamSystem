@@ -47,7 +47,7 @@ class QuestionsController extends Controller
             $validationRules = [
                      'category_id' => 'required',
                 'question_type_id' => 'required',
-                   'question_mark' => 'required',
+                   'question_mark' => 'required|numeric',
                         'question' => 'required',
                  'question_answer' => 'required'
             ];

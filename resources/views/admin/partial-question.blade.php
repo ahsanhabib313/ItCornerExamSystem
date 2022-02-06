@@ -41,7 +41,7 @@
 
                         <div class="mb-3">
                             <label for="questionMark">Question Mark</label>
-                            <input type="number" name="question_mark" type="text" class="form-control" >
+                            <input type="text" name="question_mark" type="text" class="form-control" >
                         </div>
                             <div class="mb-3">
                                 <label for="question" class="form-label">Question</label>

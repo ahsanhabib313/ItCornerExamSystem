@@ -15,7 +15,7 @@
 
     <!-- CSS -->
 
-   
+
     <style>
         .loader {
             position: fixed;
@@ -233,59 +233,6 @@
                                         @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select class="form-control form-control-lg no-b" name="fresher" onchange="isFresher(this.value)">
-                                                <option value="">Are you Fresher..?</option>
-                                                <option value="1" >Yes</option>
-                                                <option value="0">No</option>
-                                            </select>
-                                        @error('fresher')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                     </div>
-                                    <div class="col-lg-6 experience_div" >
-                                        <div class="form-group">
-                                            <select class="form-control form-control-lg no-b" name="experience">
-                                                <option value="">Year of Experience...</option>
-                                                <option value=".5" >.5 year</option>
-                                                <option value="1">1 year</option>
-                                                <option value="1.5">1.5 year</option>
-                                                <option value="2">2 year</option>
-                                            </select>
-                                        @error('experience')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                     </div>
-                                     <div class="col-lg-6 salary_div">
-                                         <div class="form-group">
-                                            <input type="text" name="expected_salary" id="salary"
-                                            class=" form-control form-control-lg no-b" value="" placeholder="Expected Salary...">
-                                        @error('expected_salary')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                         </div>
-                                     </div>
-                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                           <input type="text" name="city" id="city"
-                                           class=" form-control form-control-lg no-b" placeholder="Current City...">
-                                           @error('city')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                           <textarea rows="2" class="form-control" placeholder="address.." name="address"></textarea>
-                                           @error('address')
-                                            <p class="text-warning">{{$message}}</p>
-                                        @enderror
-                                        </div>
-                                    </div>
-                                 </div>
                                     <div class="col-lg-12" style="padding: 0">
                                         <input type="submit" class="btn btn-success btn-lg btn-block" value="Sign Up">
                                     </div>
@@ -461,7 +408,7 @@
     <!--/#app -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/registrationFile.js') }}"></script>
+    <script src="{{ asset('assets/js/personalInfo.js') }}"></script>
 
 
 

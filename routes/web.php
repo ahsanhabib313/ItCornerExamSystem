@@ -34,6 +34,9 @@ use App\Http\Controllers\CategoryController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//demo
+$user_id = 1;
+Route::view('info','exam.personalInfo', compact('user_id'));
 
 
 Route::get('/', [RegistrationController::class, 'showPage'])->name('register.showPage');
