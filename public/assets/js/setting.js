@@ -74,7 +74,7 @@
                             var id      = $('#editSettingModal').find('#id').val();
                             var question_limit = $('#editSettingModal').find('#question_limit').val();
                             var pass_mark      = $('#editSettingModal').find('#pass_mark').val();
-                            var category    = $('#editSettingModal').find('#category_id').text();
+                            var category    = $('#editSettingModal').find('#category_id').val();
                            
                             var mcq_ques_time  = $('#editSettingModal').find('#mcq_ques_time').val();
                             var code_ques_time = $('#editSettingModal').find('#code_ques_time').val();
