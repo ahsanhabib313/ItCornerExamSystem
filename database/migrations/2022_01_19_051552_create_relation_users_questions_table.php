@@ -18,14 +18,13 @@ class CreateRelationUsersQuestionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('exam_id');
-            $table->unsignedBigInteger('question_type_id');
             $table->string('examinee_answer')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('question_id')->references('id')->on('questions');
             $table->foreign('exam_id')->references('id')->on('exams');
-            $table->foreign('question_type_id')->references('id')->on('question_types');
+
         });
     }
 

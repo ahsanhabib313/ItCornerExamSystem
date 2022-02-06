@@ -8,8 +8,8 @@
     {{--stop company name title --}}
     {{--start question box --}}
     <input type="hidden" class="user_id" value="{{$user_id}}">
-    <div class="d-flex justify-content-center row">
-        <div class="col-md-12 col-lg-12">
+    <div class="d-flex justify-content-center row my-5">
+        <div class="col-md-10 col-lg-10">
             <div id="content_section">
                 <div class="mb-5">
                     <form action="{{ route('user.question.answer.store') }}" id="questionAnswerForm">

@@ -33,7 +33,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'address',
         'question_limit_id',
+        'setting_id'
     ];
+
+    public function setting(){
+        return $this->belongsTo(Setting::class);
+    }
 
     public function category(){
         return $this->belongsTo(Category::class);

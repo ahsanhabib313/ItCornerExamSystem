@@ -5,8 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RelationUserQuestion extends Model
+class RelationUsersQuestion extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id','question_id','exam_id','examinee_answer','created_at', 'updated_at'];
+
+    public function question(){
+        return $this->belongsTo(Question::class);
+    }
+    public function exam(){
+        return $this->belongsTo(Exam::class);
+    }
 }

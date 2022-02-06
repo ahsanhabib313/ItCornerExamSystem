@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use http\Env\Response;
+
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Setting;
 use App\Models\Option;
 use App\Models\Exam;
-use App\Models\Answer;
 use App\Models\User;
 
 class ExamController extends Controller
@@ -19,6 +17,8 @@ class ExamController extends Controller
     //get the questions page
     public function getQuestion(Request $request, $user_id){
 
+        //user object
+        $user = User::find($user_id);
         //initially retrieve a exam instance for the examinee
         $exam = Exam::whereDate('created_at', '=', date('Y-m-d'))->where('user_id',  $user_id)->first();
 
@@ -36,7 +36,7 @@ class ExamController extends Controller
         }
 
         //get the setting instance
-        $setting = Setting::orderBy('id', 'desc')->first();
+        $setting = Setting::find($user->setting_id);
 
         //get the question limit
         $question_limit = $setting->question_limit;
@@ -100,7 +100,6 @@ class ExamController extends Controller
         //get the data
         $user_id = $request->user_id;
         $question_id  = $request->question_id;
-        $question_type_id  = $request->question_type_id;
         $examinee_answer = $request->examinee_answer;
 
         //compare examinee result with undefine value
@@ -124,7 +123,6 @@ class ExamController extends Controller
                         'user_id'         =>  $user_id,
                         'exam_id'         => $exam->id,
                         'question_id'     => $question_id,
-                        'question_type_id'     => $question_type_id,
                         'examinee_answer' => $examinee_answer,
                         'created_at'      =>  date('Y-m-d H:i:s'),
                         'updated_at'      =>  date('Y-m-d H:i:s')

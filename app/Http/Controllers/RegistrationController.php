@@ -37,10 +37,11 @@ class RegistrationController extends Controller
          //get the latest question limit
          $setting = Setting::orderBy('id', 'desc')->first();
          if(empty($setting)){
-             $setting_id = null;
+             return back()->with( 'message', 'Setting table not found');
          }else{
              $setting_id = $setting->id;
          }
+
          $file_type = ["jpg","png","jpeg","gif"];
          $config_data = [
              "file_name"      => 'profile', //you may set a file name
@@ -48,6 +49,8 @@ class RegistrationController extends Controller
              "target_dir"     => "assets/img/",
              "watermark"      => false,
          ];
+
+        // return $setting_id;
          $upload = new ItUpload($config_data);
          $upload_status = $upload->store();
          $file_dir = $upload->get_target_file();

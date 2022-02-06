@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\RelationUserQuestion;
+use App\Models\RelationUsersQuestion;
 use App\Models\User;
 use App\Models\Question;
 use Illuminate\Support\Facades\DB;

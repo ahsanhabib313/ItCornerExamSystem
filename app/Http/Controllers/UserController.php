@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CodeQuestionsAnswer;
+use App\Models\RelationUsersQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -76,51 +77,59 @@ class UserController extends Controller
         $exam = Exam::orderBy('id','desc')->where('user_id', $user_id)->first();
 
         //get the user answer list
-        $relation_user_question = DB::table('relation_users_questions')->where('user_id', $user_id)->where('exam_id', $exam->id)->get();
+        $relation_user_question = RelationUsersQuestion::where('user_id', $user_id)->where('exam_id', $exam->id)->get();
 
         //find the correct answer
-        $correct_answer_no =0;
+        $examinee_mark =0;
+        $total_mark = 0;
         foreach($relation_user_question as $item){
-            if($item->question_type_id == 1){
-                $option = Option::where('question_id', $item->question_id)->where('id', $item->examinee_answer)->where('answer', 1)->first();
+             $total_mark += $item->question->question_mark;
+            if($item->question->question_type_id == 1){
+                $option = Option::where('id', $item->examinee_answer)->where('question_id', $item->question_id)->where('answer', 1)->first();
                 if($option){
-                    $correct_answer_no +=1;
+                    $examinee_mark += $item->question->question_mark;
                 }
             }else{
                 $codes_answer = CodeQuestionsAnswer::where('question_id', $item->question_id)->first()->question_answer;
                 if($codes_answer == $item->examinee_answer){
-                    $correct_answer_no +=1;
+                    $examinee_mark += $item->question->question_mark;
                 }
             }
         }
-        //get the latest question limit
-        $question_limit = Setting::orderBy('id', 'desc')->first()->question_limit;
-        //get the latest pass mark
-        $pass_mark = Setting::orderBy('id', 'desc')->first()->pass_mark;
-        //decide weather he is pass or fail or suspend
+        //get the user instance
+        $user = User::find($user_id);
+
+        //get the question limit
+        $question_limit = $user->setting->question_limit;
+
+        //get the latest pass mark as percentage
+        $pass_mark =  $user->setting->pass_mark;
+
+        //calcuate the examinee mark percentage
+        $examinee_mark = round(($examinee_mark * 100)/$total_mark, 2);
+
+        //decide wether he is pass or fail or suspend
         if($exam->suspend == 1){
             $status = 'suspend';
-            $badge = 'warning';
+             $badge = 'warning';
         }else{
-            if($correct_answer_no>= $pass_mark){
+            if($examinee_mark>= $pass_mark){
                 $status = 'pass';
-                $badge = 'success';
+                 $badge = 'success';
             }else{
                 $status = 'fail';
-                $badge = 'danger';
+                 $badge = 'danger';
             }
         }
 
         //update the status on setting table
-        Exam::orderBy('id','desc')->where('user_id', $user_id)
-                 ->update([
+        $exam->update([
                      'status' => $status
                  ]);
-
-        $user = User::where('id', $user_id)->first();
+        //get the category
         $category = $user->category->name;
 
-        return view('exam.result', compact('question_limit','correct_answer_no', 'pass_mark', 'status', 'category', 'badge','user_id'));
+        return view('exam.result', compact('question_limit','examinee_mark', 'pass_mark', 'status', 'category', 'badge','user_id'));
 
     }
 

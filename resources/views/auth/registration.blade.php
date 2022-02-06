@@ -139,6 +139,9 @@
                                     for you</p>
                             </div>
                             <div class="jumbotron" style="background-color: #46747c !important;">
+                                @if(\Illuminate\Support\Facades\Session::has('message'))
+                                    <p class="text-danger">{{\Illuminate\Support\Facades\Session::get('message')}}</p>
+                                @endif
                                 <div class="">
                                     <form action="{{route('user.register')}}" enctype="multipart/form-data" method="POST">
                                         @csrf
