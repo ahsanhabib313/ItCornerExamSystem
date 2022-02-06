@@ -27,7 +27,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-group">
-                                <label for="limit" class="form-label">How many questions need to be answered for passing exam ?</label>
+                                <label for="limit" class="form-label">Pass Mark(%)</label>
                                 <input type="text" name="pass_mark"  class="form-control">
                             </div>
                         </div>

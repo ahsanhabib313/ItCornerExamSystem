@@ -35,8 +35,6 @@ use App\Http\Controllers\CategoryController;
 |
 */
 //demo
-$user_id = 1;
-Route::view('info','exam.personalInfo', compact('user_id'));
 
 
 Route::get('/', [RegistrationController::class, 'showPage'])->name('register.showPage');

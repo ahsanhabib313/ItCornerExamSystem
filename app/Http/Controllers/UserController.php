@@ -21,28 +21,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         // validate the input
         $request->validate([
-                  'fresher' => 'required',
+                  'fresher' => 'required|nullable',
                      'city' => 'required',
                   'address' => 'required',
                 'institute' => 'required',
-                'cgpa'      => 'required'
+                'cgpa'      => 'required',
+
         ]);
 
         //validate expected_salary and experience if user is not a fresher
         if($request->fresher == 0){
             $request->validate([
                      'experience' => 'required',
-                'expected_salary' => 'required',
+                         'salary' => 'required|numeric',
             ]);
         }
 
                 $user_id = $request->user_id;
                 $fresher = $request->fresher;
              $experience = $request->experience;
-        $expected_salary = $request->expected_salary;
+                 $salary = $request->salary;
                    $city = $request->city;
                 $address = $request->address;
               $institute = $request->institute;
@@ -53,7 +53,7 @@ class UserController extends Controller
                     ->update([
                     'fresher' => $fresher,
                  'experience' => $experience,
-            'expected_salary' => $expected_salary,
+                     'salary' => $salary,
                        'city' => $city,
                     'address' => $address,
                   'institute' => $institute,
@@ -61,7 +61,11 @@ class UserController extends Controller
 
                     ]);
 
-        return ($this->getExamineeResult($user_id));
+       if($update){
+           return ($this->getExamineeResult($user_id));
+       }else{
+           return response()->json();
+       }
     }
 
 

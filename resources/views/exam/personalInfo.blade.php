@@ -13,7 +13,7 @@
 
                         <div class="form-group">
                             <select class="form-control  form-control-sm" name="fresher" onchange="isFresher(this.value)">
-                                <option value="" disabled selected>Are you Fresher..?</option>
+                                <option selected value="" >Are you Fresher..?</option>
                                 <option value="1" >Yes</option>
                                 <option value="0">No</option>
                             </select>
@@ -23,7 +23,7 @@
                         <div class=" experience_div" >
                             <div class="form-group">
                                 <select class="form-control form-control-sm" name="experience">
-                                    <option value="" disabled selected>Year of Experience...</option>
+                                    <option selected value="">Year of Experience...</option>
                                     <option value=".5" >.5 year</option>
                                     <option value="1">1 year</option>
                                     <option value="1.5">1.5 year</option>
@@ -34,15 +34,13 @@
                         </div>
                         <div class="salary_div">
                             <div class="form-group">
-                                <input type="text" name="expected_salary" id="salary"
-                                       class=" form-control form-control-sm" value="" placeholder="Expected Salary...">
-
+                                <input type="text" name="salary" id="salary"
+                                       class=" form-control form-control-sm"  placeholder="Expected Salary...">
                             </div>
                         </div>
                         <div class="form-group">
                             <input type="text" name="city" id="city"
                                    class=" form-control form-control-sm" placeholder="Current City...">
-
                         </div>
                         <div class="form-group">
                             <textarea rows="2" class="form-control form-control-sm" placeholder="address.." name="address"></textarea>
@@ -52,7 +50,7 @@
                             <input type="text" name="institute" class="form-control form-control-sm " id="institute" placeholder="Graduated From">
                         </div>
                         <div class="form-group">
-                            <input type="text"  name="cgpa " class="form-control form-control-sm" id="cgpa" placeholder="B.Sc or Equivalent CGPA">
+                            <input type="text"  name="cgpa" class="form-control form-control-sm" id="cgpa" placeholder="B.Sc or Equivalent CGPA">
                         </div>
                         <button  onclick="skipPersonalInfo({{$user_id}})" class="btn btn-danger" >Skip</button>
                         <button type="submit"  class="btn btn-primary ml-2">Submit</button>

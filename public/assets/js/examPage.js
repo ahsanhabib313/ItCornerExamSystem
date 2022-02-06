@@ -199,13 +199,23 @@ function skipPersonalInfo(id) {
 $('#personaInfo').submit(function (event){
     event.preventDefault();
 
-    var user_id = $('#user_id').val();
-    var institute = $('#institute').val();
-    var cgpa = $('#cgpa').val();
+    let user_id = $('input[name="user_id"]').val();
+    let fresher = $('select[name="fresher"]').val();
+    let experience = $('select[name="experience"]').val();
+    let salary = $('input[name="salary"]').val();
+    let city = $('input[name="city"]').val();
+    let address = $('textarea[name="address"]').val();
+    let institute = $('input[name="institute"]').val();
+    let cgpa = $('input[name="cgpa"]').val();
 
     //convert into formData
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('user_id', user_id);
+    formData.append('fresher', fresher);
+    formData.append('experience', experience);
+    formData.append('salary', salary);
+    formData.append('city', city);
+    formData.append('address', address);
     formData.append('institute', institute);
     formData.append('cgpa', cgpa);
 
@@ -231,6 +241,7 @@ $('#personaInfo').submit(function (event){
         },
         error: function (xhr, status, error) {
             $('#errors').html(' ');
+            $('#errors').append("<p class='alert alert-danger'>" +xhr.responseJSON.message+ "</p>");
             $.each(xhr.responseJSON.errors, function (key, item) {
                 $("#errors").append("<p class='alert alert-danger'>" + item + "</p>")
             });
