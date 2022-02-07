@@ -1,22 +1,22 @@
 // hide options for code
-function questionTypeChange(value){
-   if( value ==2 ){
-       $('.option_section').css('display', 'none');
-       $('.admin-panel-shadow').css('padding-bottom', '50px');
-       $('#question').parent().after('<div class="mt-3 mb-3">' +
-            '<label for="question_answer">Question Answer</label>'+
-            '<input type="text" class="form-control" id="question_answer" name="question_answer">'+
-           '</div>');
-   }else{
-       $('#question').parent().next().remove();
-       $('.option_section').css('display', 'block');
-       $('#question').attr('rows', 3);
-   }
+function questionTypeChange(value) {
+    if (value == 2) {
+        $('.option_section').css('display', 'none');
+        $('.admin-panel-shadow').css('padding-bottom', '50px');
+        $('#question').parent().after('<div class="mt-3 mb-3">' +
+            '<label for="question_answer">Question Answer</label>' +
+            '<input type="text" class="form-control" id="question_answer" name="question_answer">' +
+            '</div>');
+    } else {
+        $('#question').parent().next().remove();
+        $('.option_section').css('display', 'block');
+        $('#question').attr('rows', 3);
+    }
 }
 
 
 //edit the question
-function editQuestion(value){
+function editQuestion(value) {
 
     let formData = new FormData();
     formData.append('id', value);
@@ -31,28 +31,68 @@ function editQuestion(value){
     //ajax call
     $.ajax({
         url: formUrl,
-        type:'POST',
+        type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
         dataType: 'json',
         cache: false,
-        success: function(data){
-            console.log(data);
-              $('#editQuestionModal').find('textarea').val(data.question.question);
-              // set the category option in category select box
-              var option = '';
-              for(let i=0; i<data.categories.length; i++){
-                  option += '<option value="'+ data.categories[i].id +'" class="category_option">'+data.categories[i].name+'</option>'
-              }
-              $('#updateForm').find('#categories').html('');
-              $('#updateForm').find('#categories').append(option);
+        success: function (data) {
 
-              //select the correct option
-            $('.category_option')
+            //set the question type
+            $('.question_type').text(data.question.question_type.name.toUpperCase());
+
+            //set the question type
+            $('input[name="question_type_id"]').val(data.question.question_type_id);
+
+            //set the quetion id
+            $('input[name="question_id"]').val(data.question.id);
+
+            // set the category option in category select box
+            let option = '';
+            for (let i = 0; i < data.categories.length; i++) {
+                option += '<option value="' + data.categories[i].id + '" class="category_option' + value + '">' + data.categories[i].name + '</option>'
+            }
+
+            $('#updateForm').find('#categories').html('');
+            $('#updateForm').find('#categories').append(option);
+
+            //unselect the categories option
+            $('.category_option' + value).each(function () {
+                $(this).attr('selected', false);
+
+            })
+            //select the correct option
+            $('.category_option' + value).each(function () {
+                if ($(this).val() == data.question.category_id) {
+                    $(this).attr('selected', true);
+                }
+            })
+
+            /****set the value in question field****/
+            $('#editQuestionModal').find('textarea[name="question"]').val(data.question.question);
+
+            /****set the value in question mark field****/
+            $('#editQuestionModal').find('input[name="question_mark"]').val(data.question.question_mark);
+
+            /****whether the question type id is 2 */
+            if (data.question.question_type_id == 2) {
+                let html = '';
+                html += '<div class="mb-3">' +
+                    '<label for="code_answer" class="form-label">Programming Quesiton Answer</label>' +
+                    '<input type="text" name="code_answer" id="code_answer" class="form-control text-black" value="' + data.code_answer + '">' +
+                    '</div>';
+
+                $('#editQuestionModal').find('#code_answer').html('');
+                $('#editQuestionModal').find('#code_answer').append(html);
+            } else {
+                $('#editQuestionModal').find('#code_answer').html('');
+            }
+
+
 
         },
-        error: function(data){
+        error: function (data) {
             console.log(data);
 
         }
@@ -60,21 +100,14 @@ function editQuestion(value){
 }
 
 //update the question
-$('#updateQuestion').click(function(){
+$('#update-question-btn').click(function () {
 
-    let question_id = $('#updateForm').find('#question_id').val();
-    let question = $('#updateForm').find('#question').val();
-    let option_text = [];
-    let option_id = [];
-
-    //add option text in a array
-    $('.option').each(function(){
-       option_text.push(this.value)
-    });
-    //add option id in a array
-    $('.option').each(function(){
-       option_id.push(this.getAttribute('data-id'))
-    });
+    let question_type_id = $('#updateForm').find('input[name="question_id"]').val();
+    let question_id = $('#updateForm').find('input[name="question_id"]').val();
+    let category_id = $('#updateForm').find('select[name="category_id"]').val();
+    let question = $('#updateForm').find('input[name="question"]').val();
+    let question_mark = $('#updateForm').find('input[name="question_mark"]').val();
+    let question_mark = $('#updateForm').find('input[name="question_mark"]').val();
 
     //convert form data
     let formData = new FormData();
@@ -94,17 +127,17 @@ $('#updateQuestion').click(function(){
     //ajax call
     $.ajax({
         url: formUrl,
-        type:'post',
+        type: 'post',
         data: formData,
         processData: false,
         contentType: false,
         dataType: 'json',
         cache: false,
-        success: function(data){
+        success: function (data) {
 
 
         },
-        error: function(data){
+        error: function (data) {
             console.log(data);
 
         }
@@ -113,53 +146,53 @@ $('#updateQuestion').click(function(){
 
 })
 
- /*........Delete the Question.......*/
+/*........Delete the Question.......*/
 
-    function deleteQuestion(question_id){
+function deleteQuestion(question_id) {
 
-        //assign the value in the question_id input
-        $('input[name="question_id"]').val(question_id)
+    //assign the value in the question_id input
+    $('input[name="question_id"]').val(question_id)
 
-    }
+}
 
-    // delete confirmation
-    $('#delete').click(function (){
+// delete confirmation
+$('#delete').click(function () {
 
-        var id =   $('input[name="question_id"]').val()
+    var id = $('input[name="question_id"]').val()
 
-        $.ajax({
-            url: deleteQuestionUrl+'/'+id,
-            type:'get',
-            success: function (response){
+    $.ajax({
+        url: deleteQuestionUrl + '/' + id,
+        type: 'get',
+        success: function (response) {
 
-                //hide the confirm text
-                $('.confirm').css('display', 'none');
+            //hide the confirm text
+            $('.confirm').css('display', 'none');
 
-                //show the success method
-                $('.msg').css('display','block');
-                $('.msg').text(response.message);
+            //show the success method
+            $('.msg').css('display', 'block');
+            $('.msg').text(response.message);
 
-                //set a timeout for modal hide and reset the text
-                setTimeout(function (){
-                    //hide the delete modal
-                    $('#deleteQuestionModal').modal('hide');
-                    $('.confirm').css('display', 'block');
-                    $('.msg').css('display','none');
+            //set a timeout for modal hide and reset the text
+            setTimeout(function () {
+                //hide the delete modal
+                $('#deleteQuestionModal').modal('hide');
+                $('.confirm').css('display', 'block');
+                $('.msg').css('display', 'none');
 
-                    //delete the deleted questions and answer from the view
-                    $('#question_section_'+id).remove();
+                //delete the deleted questions and answer from the view
+                $('#question_section_' + id).remove();
 
-                }, 2000);
-
-
+            }, 2000);
 
 
-            },
-            error: function (error){
 
-            }
-        })
 
-    });
+        },
+        error: function (error) {
+
+        }
+    })
+
+});
 
 

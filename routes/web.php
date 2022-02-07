@@ -12,8 +12,6 @@ use App\Http\Controllers\CodeEditorController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\RegisterController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Admin\HomeController;
-
 use App\Http\Controllers\ResultController;
 
 /**
@@ -21,9 +19,7 @@ use App\Http\Controllers\ResultController;
  */
 
 use App\Http\Controllers\QuestionsController;
-use App\Http\Controllers\QuestionLimitController;
 use App\Http\Controllers\CategoryController;
-// use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,8 +34,8 @@ use App\Http\Controllers\CategoryController;
 
 
 Route::get('/', [RegistrationController::class, 'showPage'])->name('register.showPage');
-// Route::get('/login', [LoginController::class, 'index'])->name('login.index');
-// Route::post('/login/check', [LoginController::class, 'login'])->name('login.check');
+Route::get('user/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('user/login/check', [LoginController::class, 'login'])->name('login.check');
 Route::get('/registration', [RegistrationController::class, 'showPage'])->name('register.showPage');
 Route::post('/user/register', [RegistrationController::class, 'register'])->name('user.register');
 Route::get('/user/exam/{user_id}', [ExamController::class, 'getQuestion'])->name('user.exam');

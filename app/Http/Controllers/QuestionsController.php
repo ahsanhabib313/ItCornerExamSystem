@@ -157,7 +157,8 @@ class QuestionsController extends Controller
 
     /* show all questions */
     public function showQuestion(Request $request){
-        $questions = Question::paginate(4);
+
+        $questions = Question::inRandomOrder()->paginate(5);
         return view('admin.showQuestions',['questions'=>$questions]);
 
     }
@@ -166,19 +167,25 @@ class QuestionsController extends Controller
     public function editQuestion(Request $request){
 
                     $categories = Category::all();
-                    $questionType = QuestionType::all();
-                    $question = Question::where('id', $request->id)->first();
-                    $options = Option::where('question_id', $request->id)->get();
-                    $correct_answer = Option::where('question_id', $request->id)->where('answer', 1)->first();
-
-                    return response()->json([
-                        'categories' => $categories,
-                        'questionType' => $questionType,
-                        'question' => $question,
-                        'options'  => $options,
-                  'correct_answer' => $correct_answer
-                    ]);
-
+                    $question = Question::with('questionType')->where('id', $request->id)->first();
+                    if($question->question_type_id == 1){
+                        $options = Option::where('question_id', $request->id)->get();
+                            return response()->json([
+                                    'categories' => $categories,
+                                      'question' => $question,
+                                      'options'  => $options,
+                            ]);
+    
+                    }else{
+                        $code_answer = CodeQuestionsAnswer::where('question_id', $request->id)->first()->question_answer;
+                        return response()->json([
+                                'categories' => $categories,
+                                  'question' => $question,
+                               'code_answer' => $code_answer
+                        ]);
+                    }
+                   
+                  
     }
 
 

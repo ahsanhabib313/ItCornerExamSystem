@@ -18,13 +18,20 @@
                                 <h3 class="text-dark"><span>Q-{{$loop->index + 1}}</span>. {{$question->question}}</h4>
                                 @php
                                     $options = App\Models\Option::where('question_id', $question->id)->get();
+                                    $option_answer = App\Models\Option::where('question_id', $question->id)->where('answer',1)->first();
+                                    $code_answer = App\Models\CodeQuestionsAnswer::where('question_id', $question->id)->first();
+
 
                                 @endphp
-                                @foreach ($options as $option)
-                                     <h5 class="ml-4 py-1"><span>{{$loop->index+1}}</span>. {{$option->option}}</h5>
-                                @endforeach
-                                <div>
-                                    <h6 class=" btn btn-success"><span>Correct Answer: </span>{{  $option = App\Models\Option::where('question_id', $question->id)->where('answer',1)->first()->option}}</h6>
+                                @isset($options)
+                                        @foreach ($options as $option)
+                                        <h5 class="ml-4 py-1"><span>{{$loop->index+1}}</span>. {{$option->option}}</h5>
+                                        @endforeach
+                                @endisset
+                               
+                                <div class="mt-3">
+
+                                    <h6 class=" btn btn-success"><span>Correct Answer: </span>{{ is_null($option_answer)?  $code_answer->question_answer:$option_answer->option  }}</h6>
                                     <h6 class=" btn btn-success"><span>Developer Category: </span>{{$question->category->name}}</h6>
                                     <h6 class=" btn btn-success"><span>Question Type: </span>{{strtoupper($question->questionType->name)}}</h6>
                                 </div>
@@ -52,7 +59,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header ">
-          <h5 class="modal-title" id="exampleModalLabel">Question Update</h5>
+          <h3 class="modal-title font-weight-bold text-black" id="exampleModalLabel">Question Update</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -62,58 +69,31 @@
 
             <form id="updateForm" action="{{url('admin/update/question')}}">
                 @csrf
-                <div class="mb-3">
-                    <div class="form-group">,,
-                        <label for="categories">Select Developer Category</label>
-                        <select class="form-control" id="categories" name="category_id">
-
-                        </select>
-                    </div>
-                </div>
+                <input type="hidden" name="question_id">
+                <input type="hidden" name="question_type_id">
+                <h3 class="text-black font-weight-bold">Type: <span class="question_type"> </span></h3>
                 <div class="mb-3">
                     <div class="form-group">
-                        <label for="question_type">Select Exam Type</label>
-                        <select class="form-control" id="question_type" name="question_type_id">
-
+                        <label for="categories">Select Developer Category</label>
+                        <select class="form-control text-black" id="categories" name="category_id">
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
-
                 <div class="mb-3">
                     <label for="questionMark">Question Mark</label>
-                    <input type="number" name="question_mark" type="text" class="form-control" >
+                    <input type="number" name="question_mark" type="text" class="form-control text-black" >
                 </div>
                 <div class="mb-3">
                     <label for="question" class="form-label">Question</label>
-                    <textarea name="question" id="question"  rows="3" class="form-control"></textarea>
+                    <textarea name="question" id="question"  rows="3" class="form-control text-black"></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="option_a" class="form-label">Option A</label>
-                    <input type="text" name="option_1" id="option_1" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="option_a" class="form-label">Option B</label>
-                    <input type="text" name="option_2" id="option_2" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="option_a" class="form-label">Option C</label>
-                    <input type="text" name="option_3" id="option_3" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="option_a" class="form-label">Option D</label>
-                    <input type="text" name="option_4" id="option_4" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <div class="form-group">
-                        <label for="correct_option">Select Currect Option</label>
-                        <select class="form-control" id="correct_option" name="correct_option">
+                <div id="code_answer">
 
-                        </select>
-                    </div>
                 </div>
                 <div class="mb-3">
                     <!-- <input type="submit" value="Save Question" class="btn btn-primary float-right"> -->
-                    <button type="submit" id="add-question-btn" class="btn btn-primary float-right">Save Question</button>
+                    <button type="submit" id="update-question-btn" class="btn btn-primary float-right">Update Question</button>
                     <div class="clearfix"></div>
                 </div>
             </form>
