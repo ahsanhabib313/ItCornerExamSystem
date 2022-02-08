@@ -59,6 +59,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' =
     Route::post('/add-new-question', [QuestionsController::class, 'add_question_store'])->name('admin.add-new-question');
     Route::post('/edit/question', [QuestionsController::class, 'editQuestion'])->name('admin.edit.question');
     Route::post('/update/question', [QuestionsController::class, 'updateQuestion'])->name('admin.update.question');
+    Route::post('/delete/question', [QuestionsController::class, 'deleteQuestion'])->name('admin.delete.question');
 
     Route::get('/add-answer', [QuestionsController::class, 'add_answer_view'])->name('add-answer');
     Route::post('/add-answer', [QuestionsController::class, 'add_answer_store'])->name('add-answer');

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container-fluid">
     <div class="border mt-3 admin-panel-shadow">
         <div class="text-secondary fw-bold admin-panel-heading p-3 bg-lisht text-center">
@@ -15,7 +16,7 @@
                         <div class="jumbotron " id="question_section_{{$question->id}}">
                             <div class="question_section p-0">
                                 <form action="{{url('admin/edit/question')}}" id="questionForm">
-                                <h3 class="text-dark"><span>Q-{{$loop->index + 1}}</span>. {{$question->question}}</h4>
+                                <h3 class="text-dark"><span>Q-{{$loop->index + 1}}</span>.<span class="question"> {{$question->question}}</span></h4>
                                 @php
                                     $options = App\Models\Option::where('question_id', $question->id)->get();
                                     $option_answer = App\Models\Option::where('question_id', $question->id)->where('answer',1)->first();
@@ -25,19 +26,25 @@
                                 @endphp
                                 @isset($options)
                                         @foreach ($options as $option)
-                                        <h5 class="ml-4 py-1"><span>{{$loop->index+1}}</span>. {{$option->option}}</h5>
+                                        <h5 class="ml-4 py-1"><span>{{$loop->index+1}}</span>. <span class="option_{{$option->id}}"> {{$option->option}}</span></h5>
                                         @endforeach
                                 @endisset
                                
                                 <div class="mt-3">
-
-                                    <h6 class=" btn btn-success"><span>Correct Answer: </span>{{ is_null($option_answer)?  $code_answer->question_answer:$option_answer->option  }}</h6>
-                                    <h6 class=" btn btn-success"><span>Developer Category: </span>{{$question->category->name}}</h6>
+                                    @if (is_null($option_answer))
+                                    <h6 class=" btn btn-success"><span>Correct Answer: </span><span class="correct_answer">{{$code_answer->question_answer}}</span></h6>
+                                    @endif
+                                    
+                                    @if (is_null($code_answer))
+                                    <h6 class=" btn btn-success"><span>Correct Answer: </span><span class="correct_answer">{{$option_answer->answer}}</span></h6>
+                                    @endif
+                                   
+                                    <h6 class=" btn btn-success"><span>Developer Category: </span><span class="category">{{$question->category->name}}</span></h6>
                                     <h6 class=" btn btn-success"><span>Question Type: </span>{{strtoupper($question->questionType->name)}}</h6>
                                 </div>
                                 <div class="m-3">
                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editQuestionModal" onclick="editQuestion({{$question->id}})">Edit</button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteQuestionModal" onclick="deleteQuestion({{$question->id}})">Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteQuestionModal" onclick="deleteQuestion({{$question->id }}, {{$question->question_type_id}})">Delete</button>
                                 </div>
                             </form>
                             </div>
@@ -65,38 +72,45 @@
           </button>
         </div>
         <div class="modal-body">
-             <div class="alert alert-warning error_msg"></div>
+             <div class="alert alert-warning error_msg text-danger"></div>
+             <div class="alert alert-success success_msg text-success">Hello</div>
 
-            <form id="updateForm" action="{{url('admin/update/question')}}">
-                @csrf
-                <input type="hidden" name="question_id">
-                <input type="hidden" name="question_type_id">
+            <form id="updateForm" action="{{route('admin.update.question')}}" method="POST">
+
+                <input type="hidden" id="question_id">
+                <input type="hidden" id="question_type_id">
                 <h3 class="text-black font-weight-bold">Type: <span class="question_type"> </span></h3>
+
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="categories">Select Developer Category</label>
-                        <select class="form-control text-black" id="categories" name="category_id">
-                            <option value=""></option>
+                        <select class="form-control text-black" id="category_id" >
                         </select>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="questionMark">Question Mark</label>
-                    <input type="number" name="question_mark" type="text" class="form-control text-black" >
+                    <input type="number" id="question_mark" type="text" class="form-control text-black" >
                 </div>
                 <div class="mb-3">
                     <label for="question" class="form-label">Question</label>
-                    <textarea name="question" id="question"  rows="3" class="form-control text-black"></textarea>
+                    <textarea  id="question"  rows="3" class="form-control text-black"></textarea>
                 </div>
                 <div id="code_answer">
 
                 </div>
+                <div id="options_input">
+
+                </div>
+                <div id="option_answer">
+                 
+                </div>
                 <div class="mb-3">
                     <!-- <input type="submit" value="Save Question" class="btn btn-primary float-right"> -->
-                    <button type="submit" id="update-question-btn" class="btn btn-primary float-right">Update Question</button>
+                    <button onclick="updateQuestion()" type="button" class="btn btn-primary float-right">Update Question</button>
                     <div class="clearfix"></div>
                 </div>
-            </form>
+              </form>
 
         </div>
       </div>
@@ -114,30 +128,34 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <form id="deleteQuestionForm" action="{{route('admin.delete.question')}}" method="POST">
         <div class="modal-body">
-            <input type="hidden" name="question_id">
-            <div class="alert alert-warning error_msg">
-            </div>
+            <input type="hidden" id="question_id">
+            <input type="hidden" id="question_type_id">
+            <div class="alert alert-warning text-danger error_msg"></div>
+            <div class="alert alert-success text-success success_msg"></div>
                 <div class="container">
                     <div class="row d-flex justify-content-center">
                             <div>
-                            <h2 class="text-danger confirm"> Are you Confirm...?</h2>
-                                <h3 class="text-success msg" style="display: none"></h3>
+                            <h2 class="text-danger "> Are you Confirm...?</h2>
+                                
                             </div>
                     </div>
                 </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="button" id="delete" class="btn btn-primary">Yes</button>
+          <button type="button" id="confirmBtn" class="btn btn-primary">Yes</button>
         </div>
+      </form>
       </div>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script>
-        var deleteQuestionUrl = "<?php echo url('admin/delete/question') ?>";
-    </script>
-  <script src="{{asset('assets/js/question.js')}}"  async></script>
+  <script>
+    //var deleteQuestionUrl = "<?php echo url('admin/delete/question') ?>";
+   
+</script>
+ 
 @endsection
+

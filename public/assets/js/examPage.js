@@ -4,14 +4,14 @@ $(window).on('load', function () {
 
     var originalHeight = window.innerHeight;
     var originalWidth = window.innerWidth;
-     var  count = 0;
+    var count = 0;
     $(window).on('mousemove', function (e) {
 
         let currentWidth = event.clientX;
         let currentHeight = event.clientY;
 
         var user_id = $('.user_id').val();
-        if(window.location.pathname == '/user/exam/'+user_id){
+        if (window.location.pathname == '/user/exam/' + user_id) {
             //check wheater mouse is out or inside in document
             if (currentWidth >= originalWidth || currentWidth <= 0 || currentHeight >= originalHeight || currentHeight <= 0) {
                 //increase the count by one
@@ -31,7 +31,7 @@ $(window).on('load', function () {
                 //check wheater user tried to get out of window more than 20
                 if (count > 10) {
                     var user_id = $('.user_id').val();
-                    $.get(userSuspendUrl+'/'+user_id, function (data){
+                    $.get(userSuspendUrl + '/' + user_id, function (data) {
                         $('#main_content').html(data);
                     })
 
@@ -74,9 +74,9 @@ function playSound() {
 var mcq_ques_time = $('#mcq_ques_time').val()
 var code_ques_time = $('#code_ques_time').val()
 
-if($('#question_type_id').val() == 1){
+if ($('#question_type_id').val() == 1) {
     var time = mcq_ques_time;
-}else{
+} else {
     var time = code_ques_time;
 }
 
@@ -106,28 +106,28 @@ function isChecked() {
     document.querySelector('.ans_err').style.display = "none";
 }
 
-$('#nextQuestionBtn').on('click', function (e){
+$('#nextQuestionBtn').on('click', function (e) {
     e.preventDefault();
 
     var question_type_id = $('#question_type_id').val();
-   if(question_type_id == 1){
-       var examinee_answer = document.querySelector('input[name="examinee_answer"]:checked');
-       if (examinee_answer == null) {
-           document.querySelector('.ans_err').style.display = "block";
-           document.querySelector('.ans_err').style.color = "red";
-           document.querySelector('.ans_err').innerHTML = 'If you are unable to answer the question. Please Click Skip Button...!';
-       } else {
-           //call the function for next question
-           getNextQuestion();
-       }
-   }else{
-       getNextQuestion();
-   }
+    if (question_type_id == 1) {
+        var examinee_answer = document.querySelector('input[name="examinee_answer"]:checked');
+        if (examinee_answer == null) {
+            document.querySelector('.ans_err').style.display = "block";
+            document.querySelector('.ans_err').style.color = "red";
+            document.querySelector('.ans_err').innerHTML = 'If you are unable to answer the question. Please Click Skip Button...!';
+        } else {
+            //call the function for next question
+            getNextQuestion();
+        }
+    } else {
+        getNextQuestion();
+    }
 
 
 })
 //skip button function
-$('#skipQuestionBtn').on('click', function (e){
+$('#skipQuestionBtn').on('click', function (e) {
     e.preventDefault();
     //call the function for next question
     getNextQuestion();
@@ -140,10 +140,10 @@ function getNextQuestion() {
     var user_id = $('#user_id').val();
     var question_id = $('#question_id').val();
     var question_type_id = $('#question_type_id').val();
-    if(question_type_id == 1){
+    if (question_type_id == 1) {
         var examinee_answer = $('input[name="examinee_answer"]:checked').val();
 
-    }else{
+    } else {
         var examinee_answer = $('#result').text();
     }
 
@@ -172,12 +172,12 @@ function getNextQuestion() {
         dataType: 'json',
         success: function (data) {
 
-            if(data.suspend == 1){
-                $.get(userSuspendUrl+'/'+user_id, function (data){
+            if (data.suspend == 1) {
+                $.get(userSuspendUrl + '/' + user_id, function (data) {
                     $('#main_content').html(data);
                 })
-            }else{
-                $.get(getNextQuestionUrl+'/'+data.user_id, function (data){
+            } else {
+                $.get(getNextQuestionUrl + '/' + data.user_id, function (data) {
                     $('#main_content').html(data);
                 });
             }
@@ -190,13 +190,13 @@ function getNextQuestion() {
 //skip personal info
 function skipPersonalInfo(id) {
 
-    $.get(getExamineeResultUrl+'/'+id,function (data){
+    $.get(getExamineeResultUrl + '/' + id, function (data) {
         $('#main_content').html(data);
     })
 }
 
 // store the personal info after exam
-$('#personaInfo').submit(function (event){
+$('#personaInfo').submit(function (event) {
     event.preventDefault();
 
     let user_id = $('input[name="user_id"]').val();
@@ -236,12 +236,12 @@ $('#personaInfo').submit(function (event){
         contentType: false,
         processData: false,
         cache: false,
-        success:function (data){
+        success: function (data) {
             $('#main_content').html(data);
         },
         error: function (xhr, status, error) {
             $('#errors').html(' ');
-            $('#errors').append("<p class='alert alert-danger'>" +xhr.responseJSON.message+ "</p>");
+            $('#errors').append("<p class='alert alert-danger'>" + xhr.responseJSON.message + "</p>");
             $.each(xhr.responseJSON.errors, function (key, item) {
                 $("#errors").append("<p class='alert alert-danger'>" + item + "</p>")
             });
@@ -251,61 +251,4 @@ $('#personaInfo').submit(function (event){
 });
 
 
-//get the examinee Result
- /*function getExamineeResult() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
 
-    //get the user id
-    let user_id = $('.user_id').val();
-    var formData = new FormData();
-    formData.append('user_id', user_id);
-
-    $.ajax({
-        url: getExamineeResultRoute,
-        type: 'post',
-        data: formData,
-        dataType: 'json',
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          $('#')
-            /*var badge;
-            if (response.status == 'fail') {
-                badge = 'danger';
-            } else {
-                badge = 'success';
-            }
-
-            var html = '';
-            html += '<div class="card">'
-            html += '<div class="card-body">'
-            html += '<h3 class=" p-5 card-title text-center text-info" style="text-decoration:underline">Your Online Exam Result</h3>'
-            html += '<table class="table table-bordered" style="text-align:center">'
-            html += '<tbody>'
-            html += '<tr><td><span class="table-text">Total Question: </span></td><td><label class="badge badge-info">' + response.question_limit + '</label></td></tr>'
-            html += '<tr><td><span class="table-text">Correct Answer: </span></td><td><label class="badge badge-info">' + response.correct_answer_no + '</label></td></tr>'
-            html += '<tr><td><span class="table-text">Pass Mark: </span></td><td><label class="badge badge-info">' + response.pass_mark + '</label></td> </tr>'
-            html += '<tr><td><span class="table-text">Status: </span></td><td><label class="badge badge-' + badge + '">' + response.status.toUpperCase() + '</label></td></tr>'
-            html += '<tr><td><span class="table-text">Category: </span></td><td><label class="badge badge-info">' + response.category + '</label></td></tr>'
-            html += '</tbody>'
-            html += '</table>'
-            html += '</div></div>'
-
-
-            $('.title').html('');
-            $('#content_section').html('');
-            $('#content_section').append(html);
-        },
-        error: function (data) {
-
-            console.log(data);
-
-        }
-    })
-
-}
-*/

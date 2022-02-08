@@ -158,7 +158,7 @@ class QuestionsController extends Controller
     /* show all questions */
     public function showQuestion(Request $request){
 
-        $questions = Question::inRandomOrder()->paginate(5);
+        $questions = Question::paginate(5);
         return view('admin.showQuestions',['questions'=>$questions]);
 
     }
@@ -170,10 +170,12 @@ class QuestionsController extends Controller
                     $question = Question::with('questionType')->where('id', $request->id)->first();
                     if($question->question_type_id == 1){
                         $options = Option::where('question_id', $request->id)->get();
+                        $option_answer_id = Option::where('question_id', $request->id)->where('answer', 1)->first()->id;
                             return response()->json([
                                     'categories' => $categories,
-                                      'question' => $question,
-                                      'options'  => $options,
+                                    'question' => $question,
+                                    'options'  => $options,
+                                    'option_answer_id'=> $option_answer_id
                             ]);
     
                     }else{
@@ -191,26 +193,114 @@ class QuestionsController extends Controller
 
     //update question and option
     public function updateQuestion(Request $request){
-
+        
+        /** get the all inputs */
+        $question_type_id = $request->question_type_id;
         $question_id = $request->question_id;
-           $question = $request->question;
-        $option_text = $request->option_text;
-         dd ($option_text);
-          $option_id = $request->option_id;
+        $question = $request->question;
+        $category_id = $request->category_id;
+        $question_mark = $request->question_mark;
+
+        if($question_type_id == 1){
+            $option_id = json_decode($request->option_id);
+            $option_text = json_decode($request->option_text);
+            $option_answer_id = $request->option_answer_id;
+            
+            //update the questions
+            $update_question = Question::where('id', $question_id)
+                               ->update([
+                                   'question' => $question,
+                                   'category_id' => $category_id,
+                                   'question_mark' => $question_mark
+                               ]);
+            
+                //update the options
+                if($update_question){
+                    for( $i= 0; $i< count($option_id); $i++){
+                        $id = (int)$option_id[$i];
+                        Option::where('id', $id)
+                                ->update([
+                                    'option' => $option_text[$i],
+                                    'answer' => 0
+                                ]);
+                    }    
+                }
+
+                $option_answer_update = Option::where('id', $option_answer_id)
+                                            ->update([
+                                                'answer' => 1
+                                            ]);
+           
+                    if($option_answer_update){
+                        return response()->json(true);
+                    }  
+
+    }else{
+
+         $code_answer = $request->code_answer;
+
+        //update the questions
+        $update_question = Question::where('id', $question_id)
+                            ->update([
+                                'question' => $question,
+                                'category_id' => $category_id,
+                                'question_mark' => $question_mark
+                            ]);
+
+        //update the code answers
+        if($update_question){
+
+        CodeQuestionsAnswer::where('question_id', $question_id)
+                                        ->update([
+                                            'question_answer' => $code_answer
+                                        ]);
+
+        }    
+        
+        return response()->json(true);
+
+    }      
 
     }
 
-    /** delete the question **/
-    public function deleteQuestion(Request $request, $question_id){
-       //retrieve all options according to question id
-        $options = Option::where('question_id', $question_id)->get();
-         foreach ($options as $option){
-             $option->delete();
-         }
-         $delete = Question::where('id', $question_id)->delete();
 
-         return response()->json([
-             'message' => 'Question has been deleted successfully'
-         ]);
+    /** delete the question **/
+    public function deleteQuestion(Request $request){
+        
+        $question_id = $request->question_id;
+        $question_type_id = $request->question_type_id;
+
+        if($question_type_id == 1){
+            //retrieve all options according to question id
+            $options = Option::where('question_id', $question_id)->get();
+            foreach ($options as $option){
+                $option->delete();
+            }
+
+            $question = Question::where('id', $question_id)->first();
+            $delete = $question->delete();
+            if($delete){
+                return response()->json(true);
+            }else{
+                return response()->json();
+            }
+            
+        }else{
+
+            $code_ques_answer = CodeQuestionsAnswer::where('question_id', $question_id)
+                               ->first();
+            $code_delete = $code_ques_answer->delete();
+
+            if($code_delete){
+                $question = Question::where('id', $question_id)->first();
+                $delete = $question->delete(); 
+                if($delete){
+                    return response()->json(true);
+                }
+            }else{
+                return response()->json();
+            }
+        }
+      
     }
 }

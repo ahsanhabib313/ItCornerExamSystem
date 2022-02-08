@@ -597,6 +597,7 @@
 <script src="{{asset('assets/js/app.js')}}"></script>
 <script src="{{asset('assets/js/admin-ajax.js')}}"></script>
 <script src="{{asset('assets/js/setting.js')}}"></script>
+<script src="{{asset('assets/js/question.js')}}" async></script>
 
 <!--
 --- Footer Part - Use Jquery anywhere at page.
