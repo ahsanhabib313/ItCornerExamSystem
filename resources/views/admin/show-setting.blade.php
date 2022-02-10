@@ -17,41 +17,41 @@
         <div class="p-3">
             <div class="row d-flex justify-content-center">
 
-                <div class="col-lg-8">
+                <div class="col-lg-10">
                    <div class="card">
                        <div class="card-body">
                             <div class="alert alert-success" style="display:none"></div>
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="settingTable">
                                     <thead class="table-active">
                                         <th>Question Limit</th>
-                                        <th>Pass Question Quantity</th>
+                                        <th>Pass Mark Percentage</th>
                                         <th>Category</th>
-                                        <th>MCQ Question Time</th>
-                                        <th>Programming Question Time</th>
+                                        <th>MCQ Question Time(seconds)</th>
+                                        <th>Programming Question Time(seconds)</th>
                                         <th>Action</th>
                                     </thead>
                                     <tbody>
                                         @isset($settings)
                                             @foreach ($settings as $item)
-                                                <tr>
+                                                <tr id="setting_row_{{$item->id}}">
                                                     <td class="question_limit_{{$item->id}}">{{$item->question_limit}}</td>
                                                     <input type="hidden" name="question_limit_{{$item->id}}" value = "{{$item->question_limit}}">
 
-                                                    <td class="pass_mark_{{$item->id}}">{{$item->pass_mark_percentage}}</td>
-                                                    <input type="hidden" name="pass_mark_{{$item->id}}" value = "{{$item->pass_mark_percentage}}">
+                                                    <td class="pass_mark_{{$item->id}}">{{$item->pass_mark}}</td>
+                                                    <input type="hidden" name="pass_mark_{{$item->id}}" value = "{{$item->pass_mark}}">
 
                                                     <td class="category_name_{{$item->id}}">{{strtoupper($item->category->name)}}</td>
-                                                    <input type="hidden" name="category_name_{{$item->id}}" value = "{{strtoupper($item->category->name)}}">
+                                                    <input type="hidden" name="category_id_{{$item->id}}" value = "{{$item->category_id}}">
                                                     
-                                                    <td class="mcq_ques_time_{{$item->id}}">{{($item->mcq_ques_time)}}s</td>
+                                                    <td class="mcq_ques_time_{{$item->id}}">{{($item->mcq_ques_time)}}</td>
                                                     <input type="hidden" name="mcq_ques_time_{{$item->id}}" value = "{{($item->mcq_ques_time)}}">
 
-                                                    <td class="code_ques_time_{{$item->id}}">{{($item->code_ques_time)}}s</td>
+                                                    <td class="code_ques_time_{{$item->id}}">{{($item->code_ques_time)}}</td>
                                                     <input type="hidden" name="code_ques_time_{{$item->id}}" value = "{{($item->code_ques_time)}}">
 
                                                     <td>
-                                                        <button class="btn btn-info" data-toggle="modal" data-target="#editSettingModal" onclick="editSetting({{ $item->id}}, {{$item->category_id}})">Edit</button>
-                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSettingModal">Delete</button>
+                                                        <button class="btn btn-info" data-toggle="modal" data-target="#editSettingModal" onclick="editSetting({{ $item->id}})">Edit</button>
+                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSettingModal" onclick="deleteSetting({{ $item->id}})">Delete</button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -84,38 +84,40 @@
 
             <div class="row d-flex justify-content-center">
                     <div class="col-md-10">
-                      <form id = "editForm" action="{{url('admin/update/setting')}}">
-                      <input type="hidden" id="id">
+                     
+                      <form id = "updateForm" action="{{url('admin/update/setting')}}" method="POST" autocomplete="off">
+                        <div class="alert alert-success text-success success_msg"></div>
+                        <div class="alert alert-warning text-danger error_msg"></div>
+                      <input type="hidden" id="setting_id">
                           <div class="form-group">
                                 <label for="#question_limit">Question Limit</label>
-                                <input type="text" name="question_limit" id="question_limit" class="form-control">
+                                <input type="text" id="question_limit" class="form-control">
                           </div>
                           <div class="form-group">
-                                <label for="#pass_mark">Pass Question Quantity</label>
-                                <input type="text" name="pass_mark" id="pass_mark" class="form-control">
+                                <label for="#pass_mark">Pass Mark(%)</label>
+                                <input type="text" id="pass_mark" class="form-control">
                           </div>
                           <div class="form-group">
                               <label for="#category_id">Category</label>
-                              <select class="form-control" name="category_id" id="category_id" >
-                                  <option value="" disabled></option>
+                              <select class="form-control" id="category_id" >
                                   @foreach($categories as $category)
-                                      <option value="{{$category->id}}" >{{$category->name}}</option>
+                                      <option class="category_option" value="{{$category->id}}" >{{$category->name}}</option>
                                   @endforeach
 
                               </select>
                           </div>
                           <div class="form-group">
                               <label for="mcq_ques_time">MCQ Question Time</label>
-                              <input name="mcq_ques_time" class="form-control" id="mcq_ques_time">
+                              <input  class="form-control" id="mcq_ques_time">
                           </div>
                           <div class="form-group">
                               <label for="code_ques_time">Code Question Time</label>
-                              <input name="code_ques_time" class="form-control" id="code_ques_time">
+                              <input  class="form-control" id="code_ques_time">
                           </div>
 
                           <div>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" id="update" class="btn btn-primary">Update</button>
+                            <button type="button" id="updateSettingBtn" class="btn btn-primary">Update</button>
                           </div>
 
                       </form>
@@ -139,15 +141,12 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <form id="deleteSettingForm" action="{{url('admin/delete/setting')}}" method="POST">
         <div class="modal-body">
-            <div class="alert alert-warning error_msg">
-
-            </div>
-            <form id="deleteForm" action="{{url('admin/delete/category')}}">
-                <input type="hidden" id="id">
-            </form>
-
-                <div class="container">
+          <div class="alert alert-success text-success success_msg"></div>
+          <div class="alert alert-warning text-danger error_msg"></div>
+                <input type="hidden" id="setting_id">
+                        <div class="container">
                     <div class="row d-flex justify-content-center">
                             <div>
                             <h2 class="text-danger"> Are you Confirm...?</h2>
@@ -157,8 +156,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="button" id="delete" class="btn btn-primary">Yes</button>
+          <button type="button" id="confirmDelete" class="btn btn-primary">Yes</button>
         </div>
+      </form>
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->integer('question_limit');
-            $table->integer('pass_mark_percentage');
+            $table->integer('pass_mark');
             $table->unsignedBigInteger('category_id');
             $table->integer('mcq_ques_time');
             $table->integer('code_ques_time');

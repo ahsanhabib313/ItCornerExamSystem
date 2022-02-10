@@ -28,7 +28,7 @@
                         <div class="mb-3">
                             <div class="form-group">
                                 <label for="limit" class="form-label">Pass Mark(%)</label>
-                                <input type="text" name="pass_mark_percentage"  class="form-control">
+                                <input type="text" name="pass_mark"  class="form-control">
                             </div>
                         </div>
                         <div class="mb-3">

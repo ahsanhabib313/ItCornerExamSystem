@@ -323,8 +323,8 @@ $('#confirmBtn').click(function () {
 
         },
         error: function (xhr, status, error) {
-            $('#editQuestionModal').find('.error_msg').html(xhr.responseJSON.message);
-            $('#editQuestionModal').find('.error_msg').css('display', 'block');
+            $('#deleteQuestionModal').find('.error_msg').html(xhr.responseJSON.message);
+            $('#deleteQuestionModal').find('.error_msg').css('display', 'block');
         }
     })
 

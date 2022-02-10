@@ -28,7 +28,7 @@ class SettingController extends Controller
 
         $validation_rules = [
             'question_limit'=>'required|min:5|max:100|numeric',
-            'pass_mark_percentage'=>'required|numeric',
+            'pass_mark'=>'required|numeric',
             'category_id'=>'required',
             'mcq_ques_time'=>'required|numeric',
             'code_ques_time'=>'required|numeric',
@@ -40,7 +40,7 @@ class SettingController extends Controller
             $users = User::all();
             $setting = new Setting();
             $setting->question_limit = $request->question_limit;
-            $setting->pass_mark_percentage = $request->pass_mark_percentage;
+            $setting->pass_mark= $request->pass_mark;
             $setting->category_id = $request->category_id;
             $setting->mcq_ques_time = $request->mcq_ques_time;
             $setting->code_ques_time = $request->code_ques_time;
@@ -79,70 +79,24 @@ class SettingController extends Controller
      * added by safkat
     */
     public function update_setting(Request $request){
+
        $update = Setting::where('id',$request->id)
                          ->update([
                              'question_limit' => $request->question_limit,
-                             'pass_mark_percentage' => $request->pass_mark_percentage,
+                             'pass_mark' => $request->pass_mark,
                              'category_id' => $request->category_id,
                              'mcq_ques_time' => $request->mcq_ques_time,
                              'code_ques_time' => $request->code_ques_time,
                          ]);
 
         if($update){
-            return response()->json([
-                'success' => 'Settings Updated Successfully...!'
-            ]);
+            return response()->json(true);
         }else{
-            return response()->json([
-                'error' => 'Settings does not update, Please try again...!'
-            ]);
+            return response()->json();
         }                 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Setting $setting)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Setting $setting)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Setting $setting)
-    {
-        //
-    }
+   
 
     /**
      * Remove the specified resource from storage.
@@ -150,8 +104,19 @@ class SettingController extends Controller
      * @param  \App\Models\Setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Setting $setting)
+    public function destroy(Request $request)
     {
-        //
+        //get the settings instance
+        $setting = Setting::find($request->id);
+        $delete = $setting->delete();
+
+        if($delete){
+            return response()->json(true);
+        }else{
+            return response()->json();
+        }
+
+        
     }
+
 }

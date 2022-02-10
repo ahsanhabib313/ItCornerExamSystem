@@ -68,6 +68,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' =
     Route::post('/add/setting',[SettingController::class,'store_setting'])->name('admin.add.setting');
     Route::get('/show/setting',[SettingController::class,'show_setting'])->name('admin.show.setting');
     Route::post('/update/setting',[SettingController::class,'update_setting'])->name('admin.update.setting');
+    Route::post('/delete/setting',[SettingController::class,'destroy'])->name('admin.delete.setting');
 
     Route::get('/add-category', [CategoryController::class, 'add_category_view'])->name('admin.add-category');
     Route::post('/add-category', [CategoryController::class, 'add_category_store'])->name('admin.add-category');
