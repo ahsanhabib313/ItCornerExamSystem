@@ -87,9 +87,14 @@ class ExamController extends Controller
         }
 
         //check question type id
-        if( $question->question_type_id == 2){
+        if( $question->question_type_id == 2 && $question->category_id == 1){
 
-            return(view('exam.codeExam', compact('question_limit','question','current_ques_no','user_id','question_type_id', 'mcq_ques_time','code_ques_time')));
+            return(view('exam.phpCodeExam', compact('question_limit','question','current_ques_no','user_id','question_type_id', 'mcq_ques_time','code_ques_time')));
+        }
+        //check question type id
+        if( $question->question_type_id == 2 && $question->category_id == 2){
+
+            return(view('exam.jsCodeExam', compact('question_limit','question','current_ques_no','user_id','question_type_id', 'mcq_ques_time','code_ques_time')));
         }
 
     }

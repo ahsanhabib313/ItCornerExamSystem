@@ -31,7 +31,7 @@
                         <h4>Admin Registration</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register')  }}">
+                        <form method="POST" action="{{ route('admin.register')  }}">
                             @csrf
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -76,7 +76,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-8 offset-md-12">
-                                    <p id="text"><a href="{{ route('login') }}">Go back to login</a></p>
+                                    <p id="text"><a href="{{ route('admin.login') }}">Go back to login</a></p>
                                 </div>
                             </div>
                         </form>

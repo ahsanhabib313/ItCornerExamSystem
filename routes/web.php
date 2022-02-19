@@ -32,26 +32,43 @@ use App\Http\Controllers\CategoryController;
 */
 //demo
 
+Route::prefix('/user')->name('user.')->group(function(){
 
-Route::get('/', [RegistrationController::class, 'showPage'])->name('register.showPage');
-Route::get('user/login', [LoginController::class, 'index'])->name('login.index');
-Route::post('user/login/check', [LoginController::class, 'login'])->name('login.check');
-Route::get('/registration', [RegistrationController::class, 'showPage'])->name('register.showPage');
-Route::post('/user/register', [RegistrationController::class, 'register'])->name('user.register');
-Route::get('/user/exam/{user_id}', [ExamController::class, 'getQuestion'])->name('user.exam');
-Route::post('user/question/answer/store', [ExamController::class, 'questionAnswerStore'])->name('user.question.answer.store');
-Route::get('get/next/question/{id}',[ExamController::class, 'getQuestion'])->name('get.next.question');
-Route::post('/store/personal/info', [UserController::class, 'store'])->name('store.personal.info');
-Route::get('/get/examinee/result/{id}', [UserController::class, 'getExamineeResult'])->name('get.examinee.result');
-Route::get('/user/suspended/{user_id}',[UserController::class,'userSuspend'])->name('user.suspended');
+    Route::middleware(['guest:web','preventBackHistory'])->group(function(){
 
-//code editor route
-Route::post('file/write', [CodeEditorController::class, 'codeWrite']);
+        Route::get('/registration', [RegistrationController::class, 'showPage'])->name('registration.showPage');
+        Route::post('/registration', [RegistrationController::class, 'register'])->name('registration');
+        Route::get('user/login', [LoginController::class, 'index'])->name('login.index');
+        Route::post('user/login/check', [LoginController::class, 'login'])->name('login.check');
+
+    });
+    
+    Route::middleware(['auth:web','preventBackHistory'])->group(function(){
+
+        Route::get('/exam/{user_id}', [ExamController::class, 'getQuestion'])->name('exam');
+        Route::post('question/answer/store', [ExamController::class, 'questionAnswerStore'])->name('question.answer.store');
+        Route::get('get/next/question/{id}',[ExamController::class, 'getQuestion'])->name('get.next.question');
+        Route::post('/store/personal/info', [UserController::class, 'store'])->name('store.personal.info');
+        Route::get('/get/examinee/result/{id}', [UserController::class, 'getExamineeResult'])->name('get.examinee.result');
+        Route::get('/suspended/{user_id}',[UserController::class,'userSuspend'])->name('suspended');
+
+        //code editor route
+        Route::post('file/write', [CodeEditorController::class, 'codeWrite']);
+        
+
+
+    });
+
+
+});
+
+
+
 
 // route by MI Rajin
 
-Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' => '/admin'], function () {
-    // Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.home');
+Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin','preventBackHistory'], 'prefix' => '/admin'], function () {
+    
     // admin route
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/add-new-question', [QuestionsController::class, 'add_question_view'])->name('admin.add-new-question');
@@ -61,8 +78,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' =
     Route::post('/update/question', [QuestionsController::class, 'updateQuestion'])->name('admin.update.question');
     Route::post('/delete/question', [QuestionsController::class, 'deleteQuestion'])->name('admin.delete.question');
 
-    Route::get('/add-answer', [QuestionsController::class, 'add_answer_view'])->name('add-answer');
-    Route::post('/add-answer', [QuestionsController::class, 'add_answer_store'])->name('add-answer');
+    Route::get('/add-answer', [QuestionsController::class, 'add_answer_view'])->name('admin.add-answer');
+    Route::post('/add-answer', [QuestionsController::class, 'add_answer_store'])->name('admin.add-answer');
     //settings route
     Route::get('/add/setting',[SettingController::class,'index'])->name('admin.add.setting');
     Route::post('/add/setting',[SettingController::class,'store_setting'])->name('admin.add.setting');
@@ -75,26 +92,41 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['auth:admin'], 'prefix' =
     Route::get('/show/category', [CategoryController::class, 'show_category'])->name('admin.show.category');
     Route::post('/update/category', [CategoryController::class, 'update_category'])->name('admin.update.category');
     Route::post('/delete/category', [CategoryController::class, 'delete_category'])->name('admin.delete.category');
-
     Route::get('/view-cv', [ResultController::class, 'viewCv'])->name('admin.view-cv');
+    //logout the admin
+    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
+    
 });
 
-Route::namespace('Auth')->group(function () {
+Route::namespace('Auth')->name('admin.')->group(function () {
+
+    Route::middleware(['guest:admin','preventBackHistory'])->group(function(){
 
     //Login Routes
     Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/admin/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Register Routes
     Route::get('/admin/register', [RegisterController::class, 'showRegisterForm'])->name('register');
     Route::post('/admin/register', [RegisterController::class, 'register'])->name('register');
 
-    //Forgot Password Routes
+
+
+    });
+
+   /*  Route::middleware(['auth:admin']) */
+   
+   
+
+    
+   /*  //Forgot Password Routes
     Route::get('/password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
     //Reset Password Routes
     Route::get('/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('/password/reset', 'ResetPasswordController@reset')->name('password.update');
+ */
+
 });

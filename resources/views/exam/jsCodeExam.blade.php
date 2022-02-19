@@ -1,6 +1,6 @@
 @extends('exam.index')
-
 @section('content')
     @include('exam.header')
-    @include('exam.partialCodeExam')
+    @include('exam.partialJsCodeExam')
 @endsection
+

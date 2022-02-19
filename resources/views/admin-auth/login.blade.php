@@ -32,7 +32,7 @@
                         <h4>Admin Login</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login')  }}">
+                        <form method="POST" action="{{ route('admin.login')  }}">
                             @csrf
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -79,7 +79,7 @@
                                     @endif
                                 </div>
                                 <div class="col-md-8 offset-md-12">
-                                    <p id="text">Not a Member ? <a href="{{ route('register') }}" id="signup">Signup Now</a></p>
+                                    <p id="text">Not a Member ? <a href="{{ route('admin.register') }}" id="signup">Signup Now</a></p>
                                 </div>
                             </div>
                         </form>

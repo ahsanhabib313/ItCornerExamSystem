@@ -7,20 +7,24 @@ $(document).ready(function () {
 		theme: "ambiance",
 		lineWiseCopyCut: true,
 		undoDepth: 200,
+		lineWrapping: true,
+		fixedGutter: true
 
 	});
-    editor.setValue('<?php\n echo "Hello World"\n?>');
+
+	editor.setValue('<?php\n echo "Hello World"\n?>');
 
 	$('#run').click(function (e) {
 		e.preventDefault();
 		$("#error").html("").hide();
 		var editorCode = editor.getValue();
+
 		if (editorCode != '') {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
 			$.ajax({
 				url: fileWriteUrl,
 				type: 'POST',
@@ -33,7 +37,6 @@ $(document).ready(function () {
 						url: codeEditableUrl,
 						type: 'GET',
 						success: function (response) {
-							console.log("response:  " + response);
 							$("#result").html(response);
 						},
 						error: function (response) {
@@ -52,14 +55,8 @@ $(document).ready(function () {
 	$('#clear').click(function (e) {
 		e.preventDefault();
 		$("#error").html("").hide();
-		editor.setValue('');
+		$("#result").html("");
+		editor.setValue('<?php\n\n\n\n\n\n\n?>');
 	});
-
-	/*$('#refresh').click(function (e) {
-		e.preventDefault();
-		$("#error").html("").hide();
-		location.reload();
-	});*/
-
 
 });

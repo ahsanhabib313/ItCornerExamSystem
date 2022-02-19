@@ -2,8 +2,7 @@
 <div class="container-fluid">
     {{--start company name title --}}
     <div class="company-name">
-       {{-- <h3 class="text-center p-2 text-success title" style="text-decoration: underline; font-weight:600">IT Corner
-            Online Exam </h3>--}}
+     
     </div>
     {{--stop company name title --}}
     {{--start question box --}}
@@ -71,6 +70,10 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{asset('assets/js/js-editor-action.js')}}"></script>
+
+
 {{--stop question box --}}
 
 

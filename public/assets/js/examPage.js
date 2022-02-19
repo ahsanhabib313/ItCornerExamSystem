@@ -135,7 +135,7 @@ $('#skipQuestionBtn').on('click', function (e) {
 //change the question manually by examinee
 function getNextQuestion() {
     //set the time 20 again
-    time = 20;
+    //   time = 20;
 
     var user_id = $('#user_id').val();
     var question_id = $('#question_id').val();
